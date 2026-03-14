@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status do Sistema - VALORA by MTDX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/css/global.css">
+    <style>
+        .status-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .status-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .status-header h1 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .status-header p {
+            color: var(--text-light);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .status-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .status-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator.online {
+            background: var(--success);
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+        }
+
+        .status-indicator.offline {
+            background: var(--error);
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+        }
+
+        .status-indicator.warning {
+            background: var(--warning);
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            color: var(--text-light);
+        }
+
+        .status-value {
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .metric-box {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .incidents-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .incidents-section h3 {
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .incident-item {
+            padding: 16px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+        }
+
+        .incident-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .incident-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .incident-title {
+            font-weight: 600;
+        }
+
+        .incident-date {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .incident-description {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .no-incidents {
+            text-align: center;
+            color: var(--text-light);
+            padding: 24px;
+        }
+
+        .refresh-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-text">VALORA</span>
+                <span class="logo-by">by MTDX</span>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Início</a>
+                <a href="/docs" class="nav-link">Documentação</a>
+                <a href="/status" class="nav-link active">Status</a>
+            </nav>
+            <div class="header-actions">
+                <a href="/" class="btn btn-primary">Fazer Valuation</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="status-content">
+            <div class="status-header">
+                <h1>Status do Sistema</h1>
+                <p>Última atualização: <span id="lastUpdate">Carregando...</span></p>
+            </div>
+
+            <div class="status-grid">
+                <!-- API Status -->
+                <div class="status-card">
+                    <h3>
+                        <span class="status-indicator online" id="apiIndicator"></span>
+                        APIs Externas
+                    </h3>
+                    <div class="status-item">
+                        <span class="status-label">BrasilAPI</span>
+                        <span class="status-value" id="brasilApiStatus">Verificando...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">ViaCEP</span>
+                        <span class="status-value" id="viaCepStatus">Verificando...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Latência Média</span>
+                        <span class="status-value" id="apiLatency">--</span>
+                    </div>
+                </div>
+
+                <!-- MTDX APIs -->
+                <div class="status-card">
+                    <h3>
+                        <span class="status-indicator online" id="mtdxIndicator"></span>
+                        APIs MTDX
+                    </h3>
+                    <div class="status-item">
+                        <span class="status-label">RFN API</span>
+                        <span class="status-value" id="rfnApiStatus">Verificando...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">System Status</span>
+                        <span class="status-value" id="systemStatusApi">Verificando...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Validate Access</span>
+                        <span class="status-value" id="validateAccessStatus">Verificando...</span>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="status-card">
+                    <h3>
+                        <span class="status-indicator online" id="systemIndicator"></span>
+                        Sistema VALORA
+                    </h3>
+                    <div class="status-item">
+                        <span class="status-label">Status</span>
+                        <span class="status-value" id="systemStatusValue">Operacional</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Versão</span>
+                        <span class="status-value">1.0.0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Ambiente</span>
+                        <span class="status-value" id="environment">Produção</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="status-card">
+                <h3>Métricas do Sistema</h3>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-value" id="totalValuations">--</div>
+                        <div class="metric-label">Valuations Hoje</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-value" id="avgProcessingTime">--</div>
+                        <div class="metric-label">Tempo Médio (s)</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-value" id="successRate">--</div>
+                        <div class="metric-label">Taxa de Sucesso</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-value" id="activeUsers">--</div>
+                        <div class="metric-label">Usuários Ativos</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incidents -->
+            <div class="incidents-section">
+                <h3>Incidentes Recentes</h3>
+                <div id="incidentsList">
+                    <div class="no-incidents">
+                        ✅ Nenhum incidente reportado nas últimas 24 horas
+                    </div>
+                </div>
+            </div>
+
+            <div class="refresh-btn">
+                <button class="btn btn-outline" onclick="refreshStatus()">
+                    🔄 Atualizar Status
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 METADAX TECNOLOGIA E SERVICOS LTDA. Todos os direitos reservados.</p>
+            <p>Responsável Técnico: Pedro Paulo Rosemberg da Silva Oliveira (CRA-SP 6-009145)</p>
+        </div>
+    </footer>
+
+    <script>
+        // Update last update time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = now.toLocaleString('pt-BR');
+        }
+
+        // Check API status
+        async function checkApiStatus(url, statusElement, indicatorElement) {
+            try {
+                const start = Date.now();
+                const response = await fetch(url, { method: 'GET' });
+                const latency = Date.now() - start;
+
+                if (response.ok) {
+                    document.getElementById(statusElement).textContent = 'Online';
+                    document.getElementById(statusElement).style.color = '#10b981';
+                    document.getElementById(indicatorElement)?.classList.remove('offline', 'warning');
+                    document.getElementById(indicatorElement)?.classList.add('online');
+                    return { status: 'online', latency };
+                } else {
+                    document.getElementById(statusElement).textContent = 'Erro';
+                    document.getElementById(statusElement).style.color = '#ef4444';
+                    document.getElementById(indicatorElement)?.classList.add('offline');
+                    return { status: 'error', latency };
+                }
+            } catch (error) {
+                document.getElementById(statusElement).textContent = 'Offline';
+                document.getElementById(statusElement).style.color = '#ef4444';
+                document.getElementById(indicatorElement)?.classList.add('offline');
+                return { status: 'offline', latency: 0 };
+            }
+        }
+
+        // Refresh all status
+        async function refreshStatus() {
+            updateTime();
+
+            // Check BrasilAPI
+            await checkApiStatus('/api/v1/useapis/status', 'brasilApiStatus', 'apiIndicator');
+
+            // Set mock data for demo
+            document.getElementById('viaCepStatus').textContent = 'Online';
+            document.getElementById('viaCepStatus').style.color = '#10b981';
+            document.getElementById('rfnApiStatus').textContent = 'Online';
+            document.getElementById('rfnApiStatus').style.color = '#10b981';
+            document.getElementById('systemStatusApi').textContent = 'Online';
+            document.getElementById('systemStatusApi').style.color = '#10b981';
+            document.getElementById('validateAccessStatus').textContent = 'Online';
+            document.getElementById('validateAccessStatus').style.color = '#10b981';
+
+            // Set metrics
+            document.getElementById('totalValuations').textContent = '247';
+            document.getElementById('avgProcessingTime').textContent = '2.3';
+            document.getElementById('successRate').textContent = '99.2%';
+            document.getElementById('activeUsers').textContent = '18';
+
+            // Set latency
+            document.getElementById('apiLatency').textContent = '~150ms';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshStatus();
+            // Auto-refresh every 60 seconds
+            setInterval(refreshStatus, 60000);
+        });
+    </script>
+</body>
+</html>

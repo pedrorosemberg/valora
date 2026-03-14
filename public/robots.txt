@@ -1,0 +1,9 @@
+# VALORA by MTDX
+# https://valora.metadax.com.br
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://valora.metadax.com.br/sitemap.xml

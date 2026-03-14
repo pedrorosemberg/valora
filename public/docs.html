@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação - VALORA by MTDX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/css/global.css">
+    <style>
+        .docs-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .docs-content h1 {
+            color: var(--primary);
+            margin-bottom: 32px;
+            font-size: 2rem;
+        }
+
+        .docs-content h2 {
+            color: var(--primary);
+            margin-top: 40px;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 8px;
+        }
+
+        .docs-content h3 {
+            color: var(--primary);
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+
+        .docs-content p {
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        .docs-content ul, .docs-content ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        .docs-content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .docs-content code {
+            background: var(--bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .docs-content pre {
+            background: var(--primary);
+            color: var(--text-inverse);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        .docs-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .docs-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+
+        .docs-content th, .docs-content td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .docs-content th {
+            background: var(--primary);
+            color: var(--text-inverse);
+        }
+
+        .docs-content a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .docs-content a:hover {
+            text-decoration: underline;
+        }
+
+        .warning-box {
+            background: #fef3cd;
+            border-left: 4px solid var(--warning);
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: var(--radius-sm);
+        }
+
+        .warning-box h4 {
+            color: var(--warning);
+            margin-bottom: 8px;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: var(--radius-sm);
+        }
+
+        .info-box h4 {
+            color: #0c5460;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-text">VALORA</span>
+                <span class="logo-by">by MTDX</span>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Início</a>
+                <a href="/docs" class="nav-link active">Documentação</a>
+                <a href="/status" class="nav-link">Status</a>
+            </nav>
+            <div class="header-actions">
+                <a href="/" class="btn btn-primary">Fazer Valuation</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="docs-content">
+            <h1>Documentação - VALORA by MTDX</h1>
+
+            <div class="info-box">
+                <h4>📌 Versão 1.0.0</h4>
+                <p>Esta documentação descreve a versão inicial do VALORA. Última atualização: Março 2026.</p>
+            </div>
+
+            <h2>1. Introdução</h2>
+            <p>O VALORA é uma aplicação web desenvolvida pela MTDX para cálculo de valuation de empresas e equity pessoal. A ferramenta utiliza múltiplas metodologias de avaliação e gera relatórios técnicos profissionais.</p>
+
+            <h3>1.1 Objetivo</h3>
+            <p>Calcular o valuation de empresas de todos os portes, utilizando metodologias reconhecidas e integrando dados de APIs públicas e privadas.</p>
+
+            <h3>1.2 Escopo</h3>
+            <ul>
+                <li>Valuation de empresas tradicionais</li>
+                <li>Valuation de empresas de nova economia</li>
+                <li>Valuation de startups</li>
+                <li>Equity pessoal (valuation de profissionais)</li>
+            </ul>
+
+            <h2>2. Metodologias de Valuation</h2>
+
+            <h3>2.1 DCF (Discounted Cash Flow)</h3>
+            <p>O método DCF calcula o valor presente dos fluxos de caixa futuros projetados, descontados a uma taxa que reflete o risco do investimento.</p>
+            <p><strong>Fórmula:</strong> VP = Σ(CFt / (1+r)^t) + VT / (1+r)^n</p>
+            <p>Onde:</p>
+            <ul>
+                <li>CFt = Fluxo de caixa no período t</li>
+                <li>r = Taxa de desconto (WACC estimado em 15%)</li>
+                <li>VT = Valor terminal</li>
+                <li>n = Número de períodos (5 anos)</li>
+            </ul>
+
+            <h3>2.2 Múltiplo de EBITDA</h3>
+            <p>Calcula o valor da empresa multiplicando o EBITDA por um múltiplo específico do setor.</p>
+            <p><strong>Fórmula:</strong> EV = EBITDA × Múltiplo</p>
+            <p>Os múltiplos variam conforme o setor de atuação da empresa.</p>
+
+            <h3>2.3 Receita × Fator</h3>
+            <p>Multiplica a receita por um fator específico do setor, ajustado pela taxa de crescimento.</p>
+            <p><strong>Fórmula:</strong> EV = Receita × Fator × Ajuste</p>
+
+            <h3>2.4 Scorecard Method (Startups)</h3>
+            <p>Método específico para startups que considera mercado endereçável, tração, estágio do produto e investimentos recebidos.</p>
+
+            <h2>3. Pesos por Tipo de Empresa</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metodologia</th>
+                        <th>Tradicional</th>
+                        <th>Nova Economia</th>
+                        <th>Startup</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DCF</td>
+                        <td>25%</td>
+                        <td>25%</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>Múltiplo EBITDA</td>
+                        <td>30%</td>
+                        <td>20%</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Receita × Fator</td>
+                        <td>25%</td>
+                        <td>30%</td>
+                        <td>30%</td>
+                    </tr>
+                    <tr>
+                        <td>Múltiplos</td>
+                        <td>20%</td>
+                        <td>-</td>
+                        <td>20%</td>
+                    </tr>
+                    <tr>
+                        <td>Scorecard</td>
+                        <td>-</td>
+                        <td>25%</td>
+                        <td>40%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>4. Score de Valorização (A-F)</h2>
+
+            <p>O score de valorização é uma avaliação qualitativa que considera 6 blocos de perguntas:</p>
+
+            <ol>
+                <li><strong>Desempenho e Eficiência</strong> (peso 15%)</li>
+                <li><strong>Mercado e Estratégia</strong> (peso 20%)</li>
+                <li><strong>Pessoas e Intangíveis</strong> (peso 15%)</li>
+                <li><strong>Capital Interno</strong> (peso 20%)</li>
+                <li><strong>Capital Externo</strong> (peso 15%)</li>
+                <li><strong>Capital de Resultado</strong> (peso 15%)</li>
+            </ol>
+
+            <h3>Conversão de Rating</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rating</th>
+                        <th>Pontuação</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A</td>
+                        <td>90-100%</td>
+                        <td>Excelente - Alto potencial de valorização</td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td>75-89%</td>
+                        <td>Muito Bom - Bom potencial de valorização</td>
+                    </tr>
+                    <tr>
+                        <td>C</td>
+                        <td>60-74%</td>
+                        <td>Bom - Potencial de valorização</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td>45-59%</td>
+                        <td>Regular - Oportunidades de melhoria</td>
+                    </tr>
+                    <tr>
+                        <td>E</td>
+                        <td>30-44%</td>
+                        <td>Em Desenvolvimento - Fase de estruturação</td>
+                    </tr>
+                    <tr>
+                        <td>F</td>
+                        <td>0-29%</td>
+                        <td>Inicial - Amplo espaço para desenvolvimento</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>5. APIs Integradas</h2>
+
+            <h3>5.1 BrasilAPI</h3>
+            <p>API pública para consulta de dados de CNPJ. Utilizada para preenchimento automático de informações cadastrais.</p>
+            <p><strong>Endpoint:</strong> <code>GET /api/v1/useapis/cnpj/{cnpj}</code></p>
+
+            <h3>5.2 ViaCEP</h3>
+            <p>API pública para consulta de endereços por CEP.</p>
+            <p><strong>Endpoint:</strong> <code>GET /api/v1/useapis/cep/{cep}</code></p>
+
+            <h3>5.3 APIs MTDX</h3>
+            <ul>
+                <li><strong>RFN API:</strong> Rating de Fontes Negativas</li>
+                <li><strong>System Status:</strong> Validação de licença</li>
+                <li><strong>Validate Access:</strong> Autenticação de usuário</li>
+            </ul>
+
+            <h2>6. Tipos de Relatório</h2>
+
+            <h3>6.1 Relatório Pessoal</h3>
+            <p>Contém apenas informações do sócio/profissional, focado em Equity Pessoal.</p>
+
+            <h3>6.2 Relatório Empresarial</h3>
+            <p>Contém dados da empresa e impacto do sócio, sem incluir informações específicas do sócio nem o Rating RFN.</p>
+
+            <h3>6.3 Relatório Completo</h3>
+            <p>Relatório completo com informações da empresa, do sócio e Rating RFN.</p>
+
+            <h2>7. Termos de Uso</h2>
+
+            <div class="warning-box">
+                <h4>⚠️ Importante</h4>
+                <p>Este relatório é uma avaliação estratégica de marketing e inovação. Não constitui uma avaliação financeira oficial nem uma recomendação de investimento.</p>
+            </div>
+
+            <h3>7.1 Validade</h3>
+            <p>Os relatórios têm validade de 3 (três) meses a partir da data de emissão.</p>
+
+            <h3>7.2 Responsabilidade Técnica</h3>
+            <p>Pedro Paulo Rosemberg da Silva Oliveira<br>CRA-SP 6-009145</p>
+
+            <h3>7.3 Uso das Informações</h3>
+            <ul>
+                <li>Os dados fornecidos são de responsabilidade do usuário</li>
+                <li>Os cálculos são baseados em metodologias reconhecidas, mas não constituem garantia de valor</li>
+                <li>O relatório pode ser utilizado para fins de negociação com sócios e investidores</li>
+            </ul>
+
+            <h2>8. Política de Privacidade</h2>
+
+            <h3>8.1 Dados Coletados</h3>
+            <ul>
+                <li>Dados cadastrais da empresa (CNPJ, endereço)</li>
+                <li>Dados financeiros (faturamento, EBITDA, ativos)</li>
+                <li>Respostas ao questionário de valuation</li>
+            </ul>
+
+            <h3>8.2 Uso dos Dados</h3>
+            <ul>
+                <li>Cálculo de valuation</li>
+                <li>Geração de relatórios</li>
+                <li>Histórico de valuations do usuário</li>
+            </ul>
+
+            <h3>8.3 Armazenamento</h3>
+            <p>Os dados são armazenados em servidores seguros e não são compartilhados com terceiros sem consentimento.</p>
+
+            <h2>9. Contato</h2>
+
+            <p><strong>METADAX TECNOLOGIA E SERVICOS LTDA</strong></p>
+            <p>CNPJ: 59.324.751/0001-06</p>
+            <p>Endereço: Avenida Paulista, 1106, Sala 01, Andar 16, Bela Vista, São Paulo, SP - CEP 01310-914</p>
+            <p>Telefone: +55 (11) 96136-0594</p>
+            <p>Email: contato@metadax.com.br</p>
+            <p>Website: <a href="https://metadax.com.br" target="_blank">metadax.com.br</a></p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 METADAX TECNOLOGIA E SERVICOS LTDA. Todos os direitos reservados.</p>
+            <p>Responsável Técnico: Pedro Paulo Rosemberg da Silva Oliveira (CRA-SP 6-009145)</p>
+        </div>
+    </footer>
+</body>
+</html>
