@@ -3,10 +3,6 @@
   "name": "valora-app",
   "builds": [
     {
-      "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "api/**/*.js",
       "use": "@vercel/node"
     },
@@ -21,12 +17,8 @@
       "dest": "/api/$1"
     },
     {
-      "src": "/(.*\\.(js|css|html|png|jpg|ico|svg))",
+      "src": "/(.*\\.(js|css|html|png|jpg|ico|svg|txt))",
       "dest": "/public/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/public/index.html"
     },
     {
       "src": "/docs",
@@ -37,11 +29,16 @@
       "dest": "/public/status.html"
     },
     {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+    {
       "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/error_page.html",
+      "status": 404
     }
-  ],
-  "env": {
-    "KV_REST_API_URL": "@kv_rest_api_url",
-    "KV_REST_API_TOKEN": "@kv_rest_api_token"
-  }
+  ]
 }

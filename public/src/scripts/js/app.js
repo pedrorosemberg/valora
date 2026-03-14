@@ -1,260 +1,172 @@
 /**
- * VALORA by MTDX - Application State Management
- * Handles form navigation, validation, data persistence, and API calls
+ * VALORA by MTDX — Application State & Controller
+ * Handles navigation, validation, API calls, UI feedback
  */
 
-// Application State
+// ─── State ──────────────────────────────────────────
 const AppState = {
   currentStep: 1,
   totalSteps: 8,
   formData: {},
   companyData: null,
-  rfnData: null,
   isAuthenticated: false,
+  sessionToken: null,
   userID: null,
-  history: []
+  userName: null
 };
 
-// API Configuration
 const API_BASE = '/api/v1';
 
-// ============================================================================
-// DOM Elements
-// ============================================================================
+// ─── DOM ────────────────────────────────────────────
+const DOM = {};
 
-const DOM = {
-  // Progress
-  progressFill: document.getElementById('progressFill'),
-  progressSteps: document.getElementById('progressSteps'),
+function initDOM() {
+  DOM.progressFill    = document.getElementById('progressFill');
+  DOM.progressSteps   = document.getElementById('progressSteps');
+  DOM.form            = document.getElementById('valuationForm');
+  DOM.formSteps       = document.querySelectorAll('.form-step');
+  DOM.prevBtn         = document.getElementById('prevBtn');
+  DOM.nextBtn         = document.getElementById('nextBtn');
+  DOM.submitBtn       = document.getElementById('submitBtn');
+  DOM.stepCounter     = document.getElementById('stepCounter');
+  DOM.loginModal      = document.getElementById('loginModal');
+  DOM.loginBtn        = document.getElementById('loginBtn');
+  DOM.logoutBtn       = document.getElementById('logoutBtn');
+  DOM.modalClose      = document.getElementById('modalClose');
+  DOM.loginSubmitBtn  = document.getElementById('loginSubmitBtn');
+  DOM.loginError      = document.getElementById('loginError');
+  DOM.userTagContainer= document.getElementById('userTagContainer');
+  DOM.userTagName     = document.getElementById('userTagName');
+  DOM.companyInfo     = document.getElementById('companyInfo');
+  DOM.searchCnpjBtn   = document.getElementById('searchCnpjBtn');
+  DOM.searchCepBtn    = document.getElementById('searchCepBtn');
+  DOM.startupFields   = document.getElementById('startupFields');
+  DOM.summaryContainer= document.getElementById('summaryContainer');
+  DOM.loadingOverlay  = document.getElementById('loadingOverlay');
+}
 
-  // Form
-  form: document.getElementById('valuationForm'),
-  formSteps: document.querySelectorAll('.form-step'),
-
-  // Navigation
-  prevBtn: document.getElementById('prevBtn'),
-  nextBtn: document.getElementById('nextBtn'),
-  submitBtn: document.getElementById('submitBtn'),
-
-  // Modal
-  loginModal: document.getElementById('loginModal'),
-  loginBtn: document.getElementById('loginBtn'),
-  loginForm: document.getElementById('loginForm'),
-  modalClose: document.querySelector('.modal-close'),
-
-  // Company Info
-  companyInfo: document.getElementById('companyInfo'),
-  searchCnpjBtn: document.getElementById('searchCnpjBtn'),
-  searchCepBtn: document.getElementById('searchCepBtn'),
-
-  // Startup Fields
-  startupFields: document.getElementById('startupFields'),
-
-  // Summary
-  summaryContainer: document.getElementById('summaryContainer'),
-
-  // Loading
-  loadingOverlay: document.getElementById('loadingOverlay')
-};
-
-// ============================================================================
-// Utility Functions
-// ============================================================================
-
-/**
- * Format number as Brazilian Real currency
- */
+// ─── Utilities ──────────────────────────────────────
 function formatCurrency(value) {
-  if (!value) return '';
-  const num = parseFloat(value.replace(/\D/g, '')) || 0;
+  const num = typeof value === 'string'
+    ? parseFloat(value.replace(/\D/g, '')) || 0
+    : parseFloat(value) || 0;
   return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
+    style: 'currency', currency: 'BRL',
+    minimumFractionDigits: 0, maximumFractionDigits: 0
   }).format(num);
 }
 
-/**
- * Format CNPJ
- */
-function formatCNPJ(value) {
-  const cleaned = value.replace(/\D/g, '');
-  return cleaned.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+function formatCNPJ(v) {
+  return v.replace(/\D/g, '').replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
 }
 
-/**
- * Format CEP
- */
-function formatCEP(value) {
-  const cleaned = value.replace(/\D/g, '');
-  return cleaned.replace(/(\d{5})(\d{3})/, '$1-$2');
+function formatCEP(v) {
+  return v.replace(/\D/g, '').replace(/(\d{5})(\d{3})/, '$1-$2');
 }
 
-/**
- * Show loading overlay
- */
-function showLoading(message = 'Processando...') {
-  DOM.loadingOverlay.classList.remove('hidden');
-  DOM.loadingOverlay.querySelector('p').textContent = message;
+function showLoading(msg = 'Processando...') {
+  if (DOM.loadingOverlay) {
+    DOM.loadingOverlay.querySelector('p').textContent = msg;
+    DOM.loadingOverlay.classList.remove('hidden');
+  }
 }
 
-/**
- * Hide loading overlay
- */
 function hideLoading() {
-  DOM.loadingOverlay.classList.add('hidden');
+  DOM.loadingOverlay?.classList.add('hidden');
 }
 
-/**
- * Show error message
- */
-function showError(message) {
-  alert(message); // TODO: Replace with toast notification
+function showAlert(containerId, message, type = 'error') {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.textContent = message;
+  el.className = `alert alert-${type}`;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 5000);
 }
 
-// ============================================================================
-// API Functions
-// ============================================================================
+// ─── API ────────────────────────────────────────────
+async function apiFetch(path, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...options.headers };
+  if (AppState.sessionToken) headers['Authorization'] = `Bearer ${AppState.sessionToken}`;
+  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  return res.json();
+}
 
-/**
- * Fetch CNPJ data from BrasilAPI
- */
 async function fetchCNPJData(cnpj) {
-  try {
-    const response = await fetch(`${API_BASE}/useapis/cnpj/${cnpj.replace(/\D/g, '')}`);
-    const data = await response.json();
-
-    if (data.success) {
-      return data.data;
-    }
-    throw new Error(data.error || 'Erro ao buscar CNPJ');
-  } catch (error) {
-    console.error('CNPJ API Error:', error);
-    throw error;
-  }
+  const data = await apiFetch(`/useapis/cnpj/${cnpj.replace(/\D/g, '')}`);
+  if (!data.success) throw new Error(data.error || 'Erro ao buscar CNPJ');
+  return data.data;
 }
 
-/**
- * Fetch CEP data from ViaCEP
- */
 async function fetchCEPData(cep) {
-  try {
-    const response = await fetch(`${API_BASE}/useapis/cep/${cep.replace(/\D/g, '')}`);
-    const data = await response.json();
-
-    if (data.success) {
-      return data.data;
-    }
-    throw new Error(data.error || 'Erro ao buscar CEP');
-  } catch (error) {
-    console.error('CEP API Error:', error);
-    throw error;
-  }
+  const data = await apiFetch(`/useapis/cep/${cep.replace(/\D/g, '')}`);
+  if (!data.success) throw new Error(data.error || 'Erro ao buscar CEP');
+  return data.data;
 }
 
-/**
- * Validate user access
- */
-async function validateAccess(userID) {
-  try {
-    const response = await fetch(`${API_BASE}/useapis/validate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userID })
-    });
-    const data = await response.json();
-
-    return data.success && data.data?.valid;
-  } catch (error) {
-    console.error('Validate Access Error:', error);
-    return false;
-  }
+async function loginUser(userID) {
+  const data = await apiFetch('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ userID })
+  });
+  return data;
 }
 
-/**
- * Calculate valuation
- */
 async function calculateValuation(formData) {
-  try {
-    const response = await fetch(`${API_BASE}/data/calculate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
-    const data = await response.json();
+  const data = await apiFetch('/data/calculate', {
+    method: 'POST',
+    body: JSON.stringify(formData)
+  });
+  if (!data.success) throw new Error(data.error || 'Erro ao calcular valuation');
+  return data.data;
+}
 
-    if (data.success) {
-      return data.data;
-    }
-    throw new Error(data.error || 'Erro ao calcular valuation');
-  } catch (error) {
-    console.error('Calculation Error:', error);
-    throw error;
+async function generatePDFReport(formData, valuationResult, reportType) {
+  const data = await apiFetch('/pdf/generate', {
+    method: 'POST',
+    body: JSON.stringify({ formData, valuationResult, reportType })
+  });
+  if (!data.success) throw new Error(data.error || 'Erro ao gerar PDF');
+  return data.data;
+}
+
+// ─── Auth UI ─────────────────────────────────────────
+function setAuthUI(authenticated, name) {
+  if (authenticated) {
+    DOM.loginBtn?.classList.add('hidden');
+    DOM.logoutBtn?.classList.remove('hidden');
+    DOM.userTagContainer?.classList.remove('hidden');
+    if (DOM.userTagName) DOM.userTagName.textContent = name || AppState.userID;
+  } else {
+    DOM.loginBtn?.classList.remove('hidden');
+    DOM.logoutBtn?.classList.add('hidden');
+    DOM.userTagContainer?.classList.add('hidden');
   }
 }
 
-/**
- * Generate PDF report
- */
-async function generatePDF(formData, valuationResult, reportType) {
-  try {
-    const response = await fetch(`${API_BASE}/pdf/generate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ formData, valuationResult, reportType })
-    });
-    const data = await response.json();
-
-    if (data.success) {
-      return data.data;
-    }
-    throw new Error(data.error || 'Erro ao gerar relatório');
-  } catch (error) {
-    console.error('PDF Generation Error:', error);
-    throw error;
-  }
-}
-
-// ============================================================================
-// Form Functions
-// ============================================================================
-
-/**
- * Update progress bar
- */
+// ─── Progress ────────────────────────────────────────
 function updateProgress() {
-  const progress = (AppState.currentStep / AppState.totalSteps) * 100;
-  DOM.progressFill.style.width = `${progress}%`;
+  const pct = (AppState.currentStep / AppState.totalSteps) * 100;
+  if (DOM.progressFill) DOM.progressFill.style.width = `${pct}%`;
+  if (DOM.stepCounter) DOM.stepCounter.textContent = `Passo ${AppState.currentStep} de ${AppState.totalSteps}`;
 
-  // Update step indicators
-  DOM.progressSteps.querySelectorAll('.step').forEach((step, index) => {
-    const stepNum = index + 1;
+  document.querySelectorAll('#progressSteps .step').forEach((step, i) => {
+    const n = i + 1;
     step.classList.remove('active', 'completed');
-
-    if (stepNum < AppState.currentStep) {
-      step.classList.add('completed');
-    } else if (stepNum === AppState.currentStep) {
-      step.classList.add('active');
-    }
+    if (n < AppState.currentStep) step.classList.add('completed');
+    else if (n === AppState.currentStep) step.classList.add('active');
   });
 }
 
-/**
- * Show specific form step
- */
-function showStep(stepNumber) {
-  DOM.formSteps.forEach(step => {
-    step.classList.remove('active');
-    if (parseInt(step.dataset.step) === stepNumber) {
-      step.classList.add('active');
-    }
+// ─── Step Navigation ─────────────────────────────────
+function showStep(n) {
+  DOM.formSteps.forEach(s => {
+    s.classList.toggle('active', parseInt(s.dataset.step) === n);
   });
 
-  // Update navigation buttons
-  DOM.prevBtn.disabled = stepNumber === 1;
+  DOM.prevBtn.disabled = n === 1;
 
-  if (stepNumber === AppState.totalSteps) {
+  if (n === AppState.totalSteps) {
     DOM.nextBtn.classList.add('hidden');
     DOM.submitBtn.classList.remove('hidden');
     generateSummary();
@@ -266,70 +178,49 @@ function showStep(stepNumber) {
   updateProgress();
 }
 
-/**
- * Collect form data from current step
- */
 function collectFormData() {
-  const currentStepEl = document.querySelector(`.form-step[data-step="${AppState.currentStep}"]`);
-  const inputs = currentStepEl.querySelectorAll('input, select, textarea');
-
-  inputs.forEach(input => {
-    if (input.type === 'radio') {
-      if (input.checked) {
-        AppState.formData[input.name] = input.value;
-      }
-    } else if (input.type === 'checkbox') {
-      AppState.formData[input.name] = input.checked;
-    } else {
-      AppState.formData[input.name] = input.value;
-    }
+  const stepEl = document.querySelector(`.form-step[data-step="${AppState.currentStep}"]`);
+  stepEl?.querySelectorAll('input, select, textarea').forEach(el => {
+    if (el.type === 'radio') { if (el.checked) AppState.formData[el.name] = el.value; }
+    else if (el.type === 'checkbox') AppState.formData[el.name] = el.checked;
+    else if (el.name) AppState.formData[el.name] = el.value;
   });
 }
 
-/**
- * Validate current step
- */
 function validateStep() {
-  const currentStepEl = document.querySelector(`.form-step[data-step="${AppState.currentStep}"]`);
-  const requiredFields = currentStepEl.querySelectorAll('[required]');
-  let isValid = true;
+  const stepEl = document.querySelector(`.form-step[data-step="${AppState.currentStep}"]`);
+  let valid = true;
 
-  requiredFields.forEach(field => {
+  stepEl?.querySelectorAll('[required]').forEach(field => {
     if (field.type === 'radio') {
-      const groupName = field.name;
-      const checked = currentStepEl.querySelector(`input[name="${groupName}"]:checked`);
-      if (!checked) {
-        isValid = false;
-        field.closest('.option-card')?.classList.add('error');
-      }
+      const name = field.name;
+      const checked = stepEl.querySelector(`input[name="${name}"]:checked`);
+      if (!checked) valid = false;
+    } else if (field.type === 'checkbox') {
+      if (!field.checked) valid = false;
     } else if (!field.value.trim()) {
-      isValid = false;
-      field.classList.add('error');
+      valid = false;
+      field.style.borderColor = 'var(--scarlet)';
+      setTimeout(() => field.style.borderColor = '', 2500);
     }
   });
-
-  return isValid;
+  return valid;
 }
 
-/**
- * Navigate to next step
- */
 function nextStep() {
   if (!validateStep()) {
-    showError('Por favor, preencha todos os campos obrigatórios.');
+    // Brief shake animation on form nav
+    DOM.nextBtn.style.animation = 'shake 0.3s ease';
+    setTimeout(() => DOM.nextBtn.style.animation = '', 300);
     return;
   }
-
   collectFormData();
 
-  // Show/hide startup fields based on company type
-  if (AppState.currentStep === 1) {
-    const companyType = AppState.formData.companyType;
-    if (companyType === 'startup') {
-      DOM.startupFields?.classList.remove('hidden');
-    } else {
-      DOM.startupFields?.classList.add('hidden');
-    }
+  // Show startup fields on step 7 if needed
+  if (AppState.currentStep === 1 && AppState.formData.companyType === 'startup') {
+    DOM.startupFields?.classList.remove('hidden');
+  } else if (AppState.currentStep === 1) {
+    DOM.startupFields?.classList.add('hidden');
   }
 
   if (AppState.currentStep < AppState.totalSteps) {
@@ -339,9 +230,6 @@ function nextStep() {
   }
 }
 
-/**
- * Navigate to previous step
- */
 function prevStep() {
   if (AppState.currentStep > 1) {
     AppState.currentStep--;
@@ -350,360 +238,298 @@ function prevStep() {
   }
 }
 
-/**
- * Generate summary for final step
- */
+// ─── Summary ─────────────────────────────────────────
+function getCompanyTypeLabel(t) {
+  return { traditional: 'Empresa Tradicional', newEconomy: 'Nova Economia', startup: 'Startup', personalEquity: 'Equity Pessoal' }[t] || '—';
+}
+
 function generateSummary() {
-  const summaryHTML = `
-    <div class="summary-section">
-      <h4>Dados da Empresa</h4>
-      <div class="summary-row">
-        <span class="summary-label">Tipo de Empresa</span>
-        <span class="summary-value">${getCompanyTypeLabel(AppState.formData.companyType)}</span>
+  if (!DOM.summaryContainer) return;
+  const d = AppState.formData;
+  DOM.summaryContainer.innerHTML = `
+    <div style="display:grid;gap:16px">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px">Empresa</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          ${row('Tipo', getCompanyTypeLabel(d.companyType))}
+          ${row('Setor', d.industry || '—')}
+          ${row('Faturamento LTM', d.revenue ? formatCurrency(d.revenue.replace(/\D/g,'')) : '—')}
+          ${row('EBITDA', d.ebitda ? d.ebitda + '%' : '—')}
+          ${row('CNPJ', d.cnpj || '—')}
+          ${row('Website', d.website || '—')}
+        </div>
       </div>
-      <div class="summary-row">
-        <span class="summary-label">Setor de Atuação</span>
-        <span class="summary-value">${AppState.formData.industry || 'Não informado'}</span>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px">Scores Principais</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          ${row('Crescimento (P)', scoreLabel(d.P))}
+          ${row('Recorrência (Q)', scoreLabel(d.Q))}
+          ${row('Mercado (U)', scoreLabel(d.U))}
+          ${row('Equipe (BB)', scoreLabel(d.BB))}
+        </div>
       </div>
-      <div class="summary-row">
-        <span class="summary-label">Faturamento LTM</span>
-        <span class="summary-value">${formatCurrency(AppState.formData.revenue) || 'Não informado'}</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">EBITDA</span>
-        <span class="summary-value">${AppState.formData.ebitda || 0}%</span>
-      </div>
-    </div>
-
-    <div class="summary-section">
-      <h4>Score de Valorização</h4>
-      <div class="summary-row">
-        <span class="summary-label">Desempenho</span>
-        <span class="summary-value">${AppState.formData.P || '-'} / 4</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Mercado</span>
-        <span class="summary-value">${AppState.formData.U || '-'} / 4</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Pessoas</span>
-        <span class="summary-value">${AppState.formData.BB || '-'} / 4</span>
-      </div>
-    </div>
-
-    <div class="summary-section">
-      <h4>Dados Cadastrais</h4>
-      <div class="summary-row">
-        <span class="summary-label">CNPJ</span>
-        <span class="summary-value">${AppState.formData.cnpj || 'Não informado'}</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Website</span>
-        <span class="summary-value">${AppState.formData.website || 'Não informado'}</span>
-      </div>
-    </div>
-  `;
-
-  DOM.summaryContainer.innerHTML = summaryHTML;
+    </div>`;
 }
 
-/**
- * Get company type label
- */
-function getCompanyTypeLabel(type) {
-  const labels = {
-    traditional: 'Empresa Tradicional',
-    newEconomy: 'Nova Economia',
-    startup: 'Startup',
-    personalEquity: 'Equity Pessoal'
-  };
-  return labels[type] || 'Não informado';
+function row(label, value) {
+  return `<div style="background:var(--ink-soft);border:1px solid var(--border);border-radius:4px;padding:10px 12px">
+    <div style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px">${label}</div>
+    <div style="font-size:0.85rem;color:var(--text-primary);font-weight:600">${value}</div>
+  </div>`;
 }
 
-/**
- * Handle CNPJ search
- */
+function scoreLabel(v) {
+  return { '1': '1 — Baixo', '2': '2 — Básico', '3': '3 — Bom', '4': '4 — Alto' }[v] || '—';
+}
+
+// ─── CNPJ / CEP ──────────────────────────────────────
 async function handleCNPJSearch() {
   const cnpjInput = document.getElementById('cnpj');
-  const cnpj = cnpjInput.value.replace(/\D/g, '');
+  const cnpj = cnpjInput?.value.replace(/\D/g, '');
+  if (!cnpj || cnpj.length !== 14) { alert('CNPJ deve ter 14 dígitos.'); return; }
 
-  if (cnpj.length !== 14) {
-    showError('CNPJ deve conter 14 dígitos.');
-    return;
-  }
-
-  showLoading('Buscando dados do CNPJ...');
-
+  showLoading('Buscando CNPJ via BrasilAPI...');
   try {
-    const data = await fetchCNPJData(cnpj);
-    AppState.companyData = data;
+    const d = await fetchCNPJData(cnpj);
+    AppState.companyData = d;
 
-    // Populate company info
-    document.getElementById('razaoSocial').textContent = data.razao_social || '-';
-    document.getElementById('nomeFantasia').textContent = data.nome_fantasia || '-';
-    document.getElementById('situacaoCadastral').textContent = data.situacao_cadastral || '-';
-    document.getElementById('porte').textContent = data.porte || '-';
-    document.getElementById('dataAbertura').textContent = data.abertura || '-';
-
-    if (data.endereco) {
-      const endereco = `${data.endereco.logradouro || ''}, ${data.endereco.numero || ''} ${data.endereco.complemento || ''} - ${data.endereco.bairro || ''}, ${data.endereco.municipio || ''} - ${data.endereco.uf || ''}`;
-      document.getElementById('endereco').textContent = endereco;
+    document.getElementById('razaoSocial').textContent = d.razao_social || '—';
+    document.getElementById('nomeFantasia').textContent = d.nome_fantasia || '—';
+    document.getElementById('situacaoCadastral').textContent = d.situacao_cadastral || '—';
+    document.getElementById('porte').textContent = d.porte || '—';
+    document.getElementById('dataAbertura').textContent = d.abertura || '—';
+    if (d.endereco) {
+      document.getElementById('endereco').textContent =
+        `${d.endereco.logradouro || ''}, ${d.endereco.numero || ''} — ${d.endereco.municipio || ''} / ${d.endereco.uf || ''}`;
+      document.getElementById('cep').value = d.endereco.cep || '';
+      document.getElementById('logradouro').value = d.endereco.logradouro || '';
+      document.getElementById('bairro').value = d.endereco.bairro || '';
+      document.getElementById('cidade').value = d.endereco.municipio || '';
+      document.getElementById('estado').value = d.endereco.uf || '';
     }
-
-    // Populate address fields
-    document.getElementById('cep').value = data.endereco?.cep || '';
-    document.getElementById('logradouro').value = data.endereco?.logradouro || '';
-    document.getElementById('cidade').value = data.endereco?.municipio || '';
-    document.getElementById('estado').value = data.endereco?.uf || '';
-
-    // Store in form data
-    AppState.formData.razao_social = data.razao_social;
-    AppState.formData.nome_fantasia = data.nome_fantasia;
-
-    // Show company info
-    DOM.companyInfo.classList.remove('hidden');
-
-  } catch (error) {
-    showError('Erro ao buscar CNPJ. Verifique o número e tente novamente.');
-  } finally {
-    hideLoading();
-  }
+    AppState.formData.razao_social = d.razao_social;
+    AppState.formData.nome_fantasia = d.nome_fantasia;
+    DOM.companyInfo?.classList.remove('hidden');
+  } catch {
+    alert('Erro ao buscar CNPJ. Verifique o número e tente novamente.');
+  } finally { hideLoading(); }
 }
 
-/**
- * Handle CEP search
- */
 async function handleCEPSearch() {
   const cepInput = document.getElementById('cep');
-  const cep = cepInput.value.replace(/\D/g, '');
+  const cep = cepInput?.value.replace(/\D/g, '');
+  if (!cep || cep.length !== 8) { alert('CEP deve ter 8 dígitos.'); return; }
 
-  if (cep.length !== 8) {
-    showError('CEP deve conter 8 dígitos.');
-    return;
-  }
-
-  showLoading('Buscando CEP...');
-
+  showLoading('Buscando endereço...');
   try {
-    const data = await fetchCEPData(cep);
-
-    document.getElementById('logradouro').value = data.logradouro || '';
-    document.getElementById('bairro').value = data.bairro || '';
-    document.getElementById('cidade').value = data.localidade || '';
-    document.getElementById('estado').value = data.uf || '';
-
-  } catch (error) {
-    showError('Erro ao buscar CEP. Verifique o número e tente novamente.');
-  } finally {
-    hideLoading();
-  }
+    const d = await fetchCEPData(cep);
+    document.getElementById('logradouro').value = d.logradouro || '';
+    document.getElementById('bairro').value = d.bairro || '';
+    document.getElementById('cidade').value = d.localidade || '';
+    document.getElementById('estado').value = d.uf || '';
+  } catch {
+    alert('Erro ao buscar CEP. Verifique o número e tente novamente.');
+  } finally { hideLoading(); }
 }
 
-/**
- * Handle form submission
- */
+// ─── Form Submit ─────────────────────────────────────
 async function handleFormSubmit(e) {
   e.preventDefault();
-
-  if (!validateStep()) {
-    showError('Por favor, preencha todos os campos obrigatórios.');
-    return;
-  }
-
-  // Check if terms accepted
-  if (!document.getElementById('acceptTerms').checked) {
-    showError('Você precisa aceitar os Termos de Uso e Política de Privacidade.');
-    return;
+  if (!validateStep()) return;
+  if (!document.getElementById('acceptTerms')?.checked) {
+    alert('Você precisa aceitar os Termos de Uso.'); return;
   }
 
   collectFormData();
-
   showLoading('Calculando valuation...');
 
   try {
-    // Calculate valuation
-    const valuationResult = await calculateValuation(AppState.formData);
-
-    showLoading('Gerando relatório...');
-
-    // Generate PDF
-    const reportData = await generatePDF(
-      AppState.formData,
-      valuationResult,
-      AppState.formData.reportType
-    );
-
-    // Store in history
-    AppState.history.push({
-      timestamp: new Date().toISOString(),
-      formData: { ...AppState.formData },
-      result: valuationResult
-    });
-
-    // Show result
-    showResult(valuationResult, reportData);
-
-  } catch (error) {
-    showError('Erro ao processar solicitação. Tente novamente.');
-    console.error(error);
-  } finally {
-    hideLoading();
-  }
+    const result = await calculateValuation(AppState.formData);
+    showLoading('Gerando relatório PDF...');
+    let reportData = null;
+    try { reportData = await generatePDFReport(AppState.formData, result, AppState.formData.reportType); } catch {}
+    showResult(result, reportData);
+  } catch (err) {
+    console.error(err);
+    alert('Erro ao processar. Tente novamente.');
+  } finally { hideLoading(); }
 }
 
-/**
- * Show valuation result
- */
+// ─── Result Screen ───────────────────────────────────
+function getScoreDesc(r) {
+  return {
+    A: 'Excelente — Alto potencial de valorização',
+    B: 'Muito Bom — Forte potencial',
+    C: 'Bom — Potencial moderado',
+    D: 'Regular — Oportunidades de melhoria',
+    E: 'Em desenvolvimento',
+    F: 'Inicial — Amplo espaço para crescer'
+  }[r] || 'Não avaliado';
+}
+
 function showResult(valuation, reportData) {
-  // Create result modal
-  const resultHTML = `
-    <div class="result-container">
-      <div class="result-header">
-        <h2>Valuation Calculado</h2>
-        <p class="result-company">${AppState.formData.razao_social || AppState.formData.companyName || 'Empresa'}</p>
+  const companyName = AppState.formData.razao_social || AppState.formData.nome_fantasia || 'Empresa';
+  const fc = (v) => formatCurrency(v);
+
+  document.querySelector('.form-container').innerHTML = `
+    <div style="animation:fadeSlideIn .4s ease">
+      <div style="text-align:center;margin-bottom:40px">
+        <div style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Parecer Técnico de Valuation</div>
+        <h1 style="font-family:'DM Serif Display',serif;font-size:1.5rem;font-style:italic;color:var(--text-primary)">${companyName}</h1>
       </div>
 
-      <div class="result-value">
-        <span class="value-label">Valor Estimado</span>
-        <span class="value-amount">${formatCurrency(valuation.companyValuation)}</span>
-        <span class="value-range">Faixa: ${formatCurrency(valuation.valuationRange?.min)} - ${formatCurrency(valuation.valuationRange?.max)}</span>
+      <div class="result-section">
+        <div class="result-main">
+          <div class="result-label">Valuation Estimado</div>
+          <div class="result-value">${fc(valuation.companyValuation)}</div>
+          <div class="result-range">Faixa: ${fc(valuation.valuationRange?.min)} — ${fc(valuation.valuationRange?.max)}</div>
+        </div>
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="result-item-label">Score</div>
+            <div class="result-item-value" style="font-family:'DM Serif Display',serif;font-style:italic;color:var(--gold);font-size:2rem">${valuation.score?.rating || '—'}</div>
+            <div style="font-size:0.72rem;color:var(--text-secondary);margin-top:4px">${getScoreDesc(valuation.score?.rating)}</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Tipo</div>
+            <div class="result-item-value">${getCompanyTypeLabel(AppState.formData.companyType)}</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Setor</div>
+            <div class="result-item-value" style="font-size:0.9rem">${AppState.formData.industry || '—'}</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Validade</div>
+            <div class="result-item-value" style="font-size:0.9rem">90 dias</div>
+          </div>
+        </div>
       </div>
 
-      <div class="result-score">
-        <span class="score-label">Score de Valorização</span>
-        <span class="score-value">${valuation.score?.rating || 'N/A'}</span>
-        <span class="score-desc">${getScoreDescription(valuation.score?.rating)}</span>
+      ${valuation.valuations?.length ? `
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header">
+          <div class="card-icon">📐</div>
+          <div><div class="card-title">Metodologias Aplicadas</div><div class="card-subtitle">Pesos compostos por tipo de empresa</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          ${valuation.valuations.map(v => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+              <span style="font-size:0.85rem;color:var(--text-secondary)">${v.method}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:0.9rem;color:var(--text-primary)">${fc(v.value)}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>` : ''}
+
+      <div style="display:flex;gap:12px;margin-top:32px">
+        ${reportData?.pdfBase64 ? `<button class="btn btn-primary btn-lg" onclick="downloadPDFFromData()">↓ Baixar Relatório PDF</button>` : ''}
+        <button class="btn btn-outline btn-lg" onclick="location.reload()">Nova Avaliação</button>
       </div>
 
-      <div class="result-actions">
-        <button class="btn btn-primary" onclick="downloadPDF()">Baixar Relatório PDF</button>
-        <button class="btn btn-outline" onclick="newValuation()">Nova Avaliação</button>
+      <div style="margin-top:32px;padding:20px;background:var(--ink-soft);border:1px solid var(--border);border-radius:8px">
+        <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--text-muted);line-height:1.7">
+          ⚠ Este relatório é uma avaliação estratégica de marketing e inovação. Não constitui avaliação financeira oficial.
+          Responsável Técnico: Pedro Paulo Rosemberg da Silva Oliveira (CRA-SP 6-009145) — METADAX TECNOLOGIA E SERVICOS LTDA.
+        </p>
       </div>
-    </div>
-  `;
+    </div>`;
 
-  // Replace form with result
-  document.querySelector('.form-container').innerHTML = resultHTML;
+  // Store result globally for PDF download
+  window._lastValuationResult = valuation;
+  window._lastReportData = reportData;
+
+  document.querySelector('.progress-container').classList.add('hidden');
 }
 
-/**
- * Get score description
- */
-function getScoreDescription(rating) {
-  const descriptions = {
-    'A': 'Excelente - Alto potencial de valorização',
-    'B': 'Muito Bom - Bom potencial de valorização',
-    'C': 'Bom - Potencial de valorização',
-    'D': 'Regular - Oportunidades de melhoria',
-    'E': 'Em Desenvolvimento - Fase de estruturação',
-    'F': 'Inicial - Amplo espaço para desenvolvimento'
-  };
-  return descriptions[rating] || 'Não avaliado';
+window.downloadPDFFromData = function() {
+  const d = window._lastReportData;
+  if (!d?.pdfBase64) return;
+  const link = document.createElement('a');
+  link.href = 'data:application/pdf;base64,' + d.pdfBase64;
+  link.download = `VALORA_${Date.now()}.pdf`;
+  link.click();
+};
+
+// ─── Input Masking ───────────────────────────────────
+function initInputMasks() {
+  ['revenue','revenueNTM','assets','investments','debt','tam','sam','funding'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', e => {
+      const raw = e.target.value.replace(/\D/g, '');
+      if (raw) e.target.value = new Intl.NumberFormat('pt-BR').format(raw);
+    });
+  });
+  document.getElementById('cnpj')?.addEventListener('input', e => {
+    const clean = e.target.value.replace(/\D/g, '').substring(0, 14);
+    e.target.value = formatCNPJ(clean);
+  });
+  document.getElementById('cep')?.addEventListener('input', e => {
+    const clean = e.target.value.replace(/\D/g, '').substring(0, 8);
+    e.target.value = formatCEP(clean);
+  });
 }
 
-/**
- * Download PDF
- */
-function downloadPDF() {
-  // TODO: Implement PDF download using jsPDF
-  alert('Funcionalidade em desenvolvimento. O PDF será gerado em breve.');
-}
-
-/**
- * Start new valuation
- */
-function newValuation() {
-  location.reload();
-}
-
-// ============================================================================
-// Event Listeners
-// ============================================================================
-
-/**
- * Initialize application
- */
+// ─── Init ────────────────────────────────────────────
 function init() {
-  // Progress navigation
+  initDOM();
+
   DOM.prevBtn?.addEventListener('click', prevStep);
   DOM.nextBtn?.addEventListener('click', nextStep);
-
-  // Form submission
   DOM.form?.addEventListener('submit', handleFormSubmit);
-
-  // CNPJ search
   DOM.searchCnpjBtn?.addEventListener('click', handleCNPJSearch);
-
-  // CEP search
   DOM.searchCepBtn?.addEventListener('click', handleCEPSearch);
 
-  // Login modal
-  DOM.loginBtn?.addEventListener('click', () => {
-    DOM.loginModal.classList.remove('hidden');
-  });
+  // Modal open
+  DOM.loginBtn?.addEventListener('click', () => DOM.loginModal?.classList.remove('hidden'));
+  DOM.modalClose?.addEventListener('click', () => DOM.loginModal?.classList.add('hidden'));
+  DOM.loginModal?.addEventListener('click', e => { if (e.target === DOM.loginModal) DOM.loginModal.classList.add('hidden'); });
 
-  DOM.modalClose?.addEventListener('click', () => {
-    DOM.loginModal.classList.add('hidden');
-  });
+  // Login submit
+  DOM.loginSubmitBtn?.addEventListener('click', async () => {
+    const userID = document.getElementById('userID')?.value?.trim();
+    if (!userID) { showAlert('loginError', 'Informe seu ID de usuário.'); return; }
 
-  DOM.loginForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const userID = document.getElementById('userID').value;
+    DOM.loginSubmitBtn.textContent = 'Verificando...';
+    DOM.loginSubmitBtn.disabled = true;
 
-    showLoading('Validando acesso...');
-
-    const isValid = await validateAccess(userID);
-
-    hideLoading();
-
-    if (isValid) {
-      AppState.isAuthenticated = true;
-      AppState.userID = userID;
-      DOM.loginModal.classList.add('hidden');
-      alert('Acesso autorizado com sucesso!');
-    } else {
-      showError('Acesso não autorizado. Verifique seu ID de usuário.');
+    try {
+      const res = await loginUser(userID);
+      if (res.success) {
+        AppState.isAuthenticated = true;
+        AppState.sessionToken = res.data.sessionToken;
+        AppState.userID = res.data.userID;
+        AppState.userName = res.data.name;
+        DOM.loginModal?.classList.add('hidden');
+        setAuthUI(true, res.data.name);
+      } else {
+        showAlert('loginError', res.error || 'Acesso não autorizado.');
+      }
+    } catch {
+      showAlert('loginError', 'Erro de conexão. Tente novamente.');
+    } finally {
+      DOM.loginSubmitBtn.textContent = 'Acessar';
+      DOM.loginSubmitBtn.disabled = false;
     }
   });
 
-  // Currency input formatting
-  document.querySelectorAll('#revenue, #revenueNTM, #assets, #investments, #debt, #tam, #sam, #funding').forEach(input => {
-    input.addEventListener('input', (e) => {
-      let value = e.target.value.replace(/\D/g, '');
-      if (value) {
-        e.target.value = new Intl.NumberFormat('pt-BR').format(value);
-      }
-    });
+  // Logout
+  DOM.logoutBtn?.addEventListener('click', () => {
+    AppState.isAuthenticated = false;
+    AppState.sessionToken = null;
+    AppState.userID = null;
+    setAuthUI(false);
   });
 
-  // CNPJ formatting
-  document.getElementById('cnpj')?.addEventListener('input', (e) => {
-    e.target.value = formatCNPJ(e.target.value);
-  });
-
-  // CEP formatting
-  document.getElementById('cep')?.addEventListener('input', (e) => {
-    e.target.value = formatCEP(e.target.value);
-  });
-
-  // Load saved data from localStorage
-  const savedData = localStorage.getItem('valoraFormData');
-  if (savedData) {
-    AppState.formData = JSON.parse(savedData);
-  }
-
-  // Initialize first step
+  initInputMasks();
   showStep(1);
 }
 
-// Initialize on DOM ready
+// Add shake keyframe if not present
+const style = document.createElement('style');
+style.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}`;
+document.head.appendChild(style);
+
 document.addEventListener('DOMContentLoaded', init);
 
-// Export for use in logic.js
+// Global exports
 window.AppState = AppState;
-window.API = {
-  calculateValuation,
-  generatePDF,
-  fetchCNPJData,
-  fetchCEPData
-};
+window.API = { calculateValuation, generatePDFReport, fetchCNPJData, fetchCEPData };
