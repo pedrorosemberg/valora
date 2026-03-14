@@ -4,7 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VALORA by MTDX — Valuation App</title>
-    <meta name="description" content="Plataforma de valuation para empresas e equity pessoal. Metodologias DCF, EBITDA, Scorecard e mais.">
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5HXJR4W8');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEQKMX0QWC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SEQKMX0QWC');
+    </script>
+
+    <link rel="canonical" href="https://metadax.com.br/">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="description" content="A METADAX oferece soluções de tecnologia e serviços de inovação, transformando a gestão de dados e impulsionando a inovação para sua empresa.">
+    <meta name="keywords" content="METADAX, tecnologia, serviços, nuvem, cloud, infraestrutura, software, dados, inovação, consultoria, Avenida Paulista">
+    <meta name="author" content="METADAX TECNOLOGIA E SERVIÇOS">
+    <meta name="publisher" content="METADAX TECNOLOGIA E SERVIÇOS">
+    <meta name="copyright" content="© 2025 METADAX TECNOLOGIA E SERVIÇOS. Todos os direitos reservados.">
+    <meta name="rating" content="General">
+    <meta name="geo.placename" content="São Paulo, SP, Brasil">
+    <meta name="geo.region" content="BR-SP">
+    <meta name="geo.position" content="-23.561353;-46.656086">
+    <meta name="ICBM" content="-23.561353, -46.656086">
+    <meta name="address" content="Avenida Paulista, 1106, Sala 01, Andar 16, Bela Vista, São Paulo, SP, CEP 01310-914, Brasil">
+
+    <meta property="og:title" content="METADAX - Tecnologia e Serviços">
+    <meta property="og:description" content="A METADAX oferece soluções de tecnologia e serviços de inovação, transformando a gestão de dados e impulsionando a inovação para sua empresa.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://metadax.com.br/">
+    <meta property="og:image" content="https://cdn.metadax.com.br/assets/images/metadax/desktop.png">
+    <meta property="og:image:alt" content="Logo da METADAX e serviços de tecnologia">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="METADAX">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@metadaxbr">
+    <meta name="twitter:creator" content="@metadaxbr">
+    <meta name="twitter:title" content="METADAX - Tecnologia e Serviços">
+    <meta name="twitter:description" content="A METADAX oferece soluções de tecnologia e serviços de inovação, transformando a gestão de dados e impulsionando a inovação para sua empresa.">
+    <meta name="twitter:image" content="https://cdn.metadax.com.br/assets/images/metadax/desktop.png">
+
+    <meta name="company" content="METADAX TECNOLOGIA E SERVIÇOS">
+    <meta name="cnpj" content="59.324.751/0001-06">
+    <meta name="address_line1" content="Avenida Paulista, 1106, Sala 01, Andar 16">
+    <meta name="address_city" content="São Paulo">
+    <meta name="address_state" content="SP">
+    <meta name="address_country" content="Brasil">
+    <meta name="postal_code" content="01310-914">
+
+    <meta name="generator" content="Visual Studio Code">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <link rel="icon" type="image/x-icon" href="https://cdn.metadax.com.br/favicon.ico">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,21 +73,44 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <!-- CDN Dependencies -->
+    <link rel="stylesheet" href="https://cdn.metadax.com.br/components/css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
 
     <!-- Styles -->
     <link rel="stylesheet" href="src/styles/css/global.css">
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2314887192357729');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=2314887192357729&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HXJR4W8"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <!-- Header -->
     <header class="header">
         <div class="container">
-            <a href="/" class="logo">
-                <span class="logo-text">VALORA</span>
-                <span class="logo-by">by MTDX</span>
+            <a href="/" class="logo" style="text-decoration:none;display:flex;align-items:center;">
+                <img src="https://cdn.metadax.com.br/assets/images/logo-black.png" alt="METADAX" style="height: 32px;">
+                <span class="logo-by" style="color: var(--gold); font-weight: bold; margin-left: 12px; font-size: 1rem;">VALORA</span>
             </a>
             <nav class="nav">
                 <a href="/" class="nav-link active">Início</a>
@@ -1008,9 +1092,26 @@
         <p>Processando valuation...</p>
     </div>
 
+    <!-- Startups Carousel -->
+    <div style="margin: 40px 0;">
+        <span id="startups-carrousel-metadax-js"></span>
+        <script src="https://cdn.metadax.com.br/startups-carousel-metadax.js"></script>
+    </div>
+
     <!-- Scripts -->
     <script src="src/scripts/js/app.js"></script>
     <script src="src/scripts/js/logic.js"></script>
+
+    <script src="https://cdn.metadax.com.br/components/scripts/whatsapp-button.js"></script>
+    <script src="https://cdn.metadax.com.br/metadax-loader.js"></script>
+    <script src="https://cdn.metadax.com.br/component-loader.js"></script>
+    <script>
+        // Inicializa o loader com a logo padrão
+        MetadaxLoader.init({
+            logoUrl: 'https://cdn.metadax.com.br/assets/images/loader.png',
+            duration: 3000
+        });
+    </script>
 
 </body>
 </html>
