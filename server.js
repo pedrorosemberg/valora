@@ -9,6 +9,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const routers = require('./routers');
 
 const app = express();
@@ -25,6 +26,22 @@ app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
+// Resilient File Checking Middleware (404 Catcher)
+app.use((req, res, next) => {
+  // Ignora APIs e rotas de página conhecidas
+  if (req.path.startsWith('/api') || ['/', '/docs', '/status'].includes(req.path)) {
+    return next();
+  }
+  
+  // Verifica se o arquivo físico solicitado existe na pasta public
+  const publicPath = path.join(__dirname, 'public', req.path);
+  if (!fs.existsSync(publicPath)) {
+    return res.status(404).sendFile(path.join(__dirname, 'error_page.html'));
+  }
+  
   next();
 });
 

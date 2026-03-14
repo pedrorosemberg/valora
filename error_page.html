@@ -74,7 +74,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <!-- CDN Dependencies -->
-    <link rel="stylesheet" href="https://cdn.metadax.com.br/components/css/styles.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
@@ -102,39 +102,194 @@
 
 </head>
 <body>
-<header class="metadax-header">
-    <div class="metadax-container">
-        <div class="metadax-header-content">
-            <a href="/" class="metadax-logo-link">
-                <img src="https://cdn.metadax.com.br/assets/images/logo-black.png" alt="metadax Logo">
-            </a>
+<header class="valora-header-native">
+    <div class="valora-container-native">
+        <a href="/" class="valora-logo-link">
+            <img src="https://cdn.metadax.com.br/assets/images/logo-black.png" alt="METADAX Logo" class="valora-logo">
+        </a>
+        
+        <!-- Toggle Menu Mobile -->
+        <button class="valora-menu-toggle" aria-label="Abrir Menu" onclick="document.querySelector('.valora-nav-native').classList.toggle('active')">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-            <!-- Botão Mobile -->
-            <button class="metadax-menu-toggle" aria-label="Menu" aria-expanded="false" onclick="document.querySelector('.metadax-nav').classList.toggle('active');">
-                ☰
-            </button>
-
-            <!-- Menu Principal -->
-            <ul class="metadax-nav">
-                <li class="metadax-nav-link-item"><a href="https://www.metadax.com.br/faq" target="_blank" referrerpolicy="nooreferrer" rel="nooreferrer noopener" class="metadax-nav-link">Ajuda (FAQ)</a></li>
-                <li class="metadax-nav-link-item">
-                    <button class="metadax-cta-button" onclick="window.open('https://sso.metadax.com.br/', '_blank', 'noopener,noreferrer')">
-                        Login
-                    </button>
+        <nav class="valora-nav-native">
+            <ul class="valora-nav-list">
+                <li><a href="/" class="valora-nav-link">Início</a></li>
+                <li><a href="/docs" class="valora-nav-link">Documentação</a></li>
+                <li><a href="/status" class="valora-nav-link">Status</a></li>
+                <li><a href="https://www.metadax.com.br/faq" target="_blank" rel="noopener noreferrer" class="valora-nav-link">Ajuda (FAQ)</a></li>
+                <li class="valora-nav-actions">
+                    <button class="btn btn-primary valora-login-btn" onclick="window.open('https://sso.metadax.com.br/', '_blank')">Login SSO</button>
+                    <!-- Download App Mobile Button - Only visible on small screens / inside menu context -->
+                    <a href="#download-app" class="btn btn-outline valora-app-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        Baixar App Native
+                    </a>
                 </li>
             </ul>
-        </div>
+        </nav>
     </div>
 </header>
 
+<style>
+/* Header Nativo Customizado - Mobile First */
+.valora-header-native {
+    background: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+.valora-container-native {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+.valora-logo {
+    height: 32px;
+    width: auto;
+}
+.valora-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001; /* Above menu */
+}
+.valora-menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: var(--text-primary, #1E1E1E);
+    transition: 0.3s;
+}
+
+/* Nav Settings */
+.valora-nav-native {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    display: none; /* hidden by default on mobile */
+    flex-direction: column;
+}
+.valora-nav-native.active {
+    display: flex;
+}
+.valora-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+.valora-nav-link {
+    text-decoration: none;
+    color: var(--text-primary, #1E1E1E);
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+.valora-nav-link:hover, .valora-nav-link.active {
+    color: var(--gold, #0056B3);
+}
+.valora-nav-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-top: 12px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+.valora-nav-actions .btn {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.valora-app-btn {
+    border: 1px solid var(--gold, #0056B3);
+    color: var(--gold, #0056B3);
+    background: transparent;
+}
+.valora-app-btn:hover {
+    background: rgba(0, 86, 179, 0.05);
+}
+
+/* Base Buttons Fallback */
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.95rem;
+}
+.btn-primary {
+    background: var(--gold, #0056B3);
+    color: #ffffff;
+    border: none;
+}
+.btn-primary:hover {
+    background: #004494; /* darker blue */
+}
+
+/* Tablet & Desktop Layout */
+@media (min-width: 992px) {
+    .valora-menu-toggle {
+        display: none;
+    }
+    .valora-nav-native {
+        display: flex !important;
+        position: static;
+        box-shadow: none;
+        padding: 0;
+        width: auto;
+        flex-direction: row;
+        background: transparent;
+    }
+    .valora-nav-list {
+        flex-direction: row;
+        align-items: center;
+        gap: 32px;
+    }
+    .valora-nav-link {
+        font-size: 0.95rem;
+    }
+    .valora-nav-actions {
+        flex-direction: row;
+        width: auto;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        margin-left: 16px;
+    }
+    .valora-nav-actions .btn {
+        width: auto;
+    }
+}
+</style>
+
+
             <!-- Menu Secundário - Valora -->
-            <nav class="metadax-submenu" style="background: rgba(0, 86, 179, 0.05); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 12px 0;">
-                <div class="metadax-container" style="display: flex; gap: 24px; font-family: 'DM Mono', monospace; font-size: 0.85rem; max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-                    <a href="/" style="color: #0056B3; text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Início</a>
-                    <a href="/docs" style="color: #495057; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.3s;" onmouseover="this.style.color='#0056B3'" onmouseout="this.style.color='#495057'">Documentação</a>
-                    <a href="/status" style="color: #495057; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.3s;" onmouseover="this.style.color='#0056B3'" onmouseout="this.style.color='#495057'">Status do Sistema</a>
-                </div>
-            </nav>
+            
   
     <div class="container">
         
@@ -144,194 +299,191 @@
         <a href="/" class="btn">Voltar ao Início</a>
     </div>
 
-    <footer class="metadax-footer">
-  <div class="metadax-container">
-    <div class="metadax-footer-grid">
-      <div class="metadax-footer-section">
-        
-        <h4>Institucional</h4>
-        <ul>
-        <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://grupo.metadax.com.br/">Grupo METADAX</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/">Homepage</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/sobre">Sobre</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/legal">Informações Legais</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/manual-de-marca">Manual de Marca</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/search">Pesquisar</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://robots.metadax.com.br/llm.txt">IA/LLM</a></li>
-        </ul>
-      </div>
-      
-      <div class="metadax-footer-section">
-        <h4>Aplicativos</h4>
-        <ul>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://audiovisual.metadax.com.br/">Projetos
-              Audiovisuais</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://projetos.metadax.com.br/">Projetos
-              de Tecnologia</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://imagen.metadax.com.br/">Gerador de Imagens</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://veiacriativa.metadax.com.br/">Veia Criativa</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://capivara.seg.br/">CAPIVARA.SEG</a></li>
-        </ul>
-      </div>
-      <div class="metadax-footer-section">
-        <h4>Sistemas</h4>
-        <ul>
-        <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/status">Status de Sistemas</a></li>
-            <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/reporte-de-incidentes">Reporte
-              de Incidentes</a></li>
-            <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/abertura-de-chamado">Abrir chamado</a></li>
-        </ul>
-      </div>
-      <div class="metadax-footer-section">
-        <h4>Segurança</h4>
-        <ul>
-                    <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/politica-de-privacidade">Política
-              de Privacidade</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/politica-de-seguranca-da-informacao">Política
-              de Segurança</a></li>
-          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
-              rel="nooreferrer noopener"
-              href="https://www.metadax.com.br/termos-de-uso">Termos
-              de Uso</a></li>
-        </ul>
-      </div>
-      
-      <div class="metadax-footer-section">
-        <h4>Contato</h4>
-        <ul>
-          <li><small><a target="_blank" referrerpolicy="nooreferrer"
-                rel="nooreferrer noopener" href="https://whatsapp.metadax.com.br">+55 11
-                96136-0594</a></small></li>
-          <li><small><a
-                href="mailto:contato@metadax.com.br">contato@metadax.com.br</a></small></li>
-        </ul>
-      </div>
-          
+    <footer class="valora-footer-native">
+    <div class="valora-footer-banner">
+        <div class="banner-content">
+            <div class="banner-text">
+                <h3>Leve a análise com você</h3>
+                <p>Baixe nosso aplicativo proprietário construído em React Native e acompanhe valuations de qualquer lugar.</p>
+            </div>
+            <div class="banner-actions">
+                <a href="#ios" class="app-store-btn" onclick="alert('Redirecionando para App Store')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Baixar na App Store">
+                </a>
+                <a href="#android" class="play-store-btn" onclick="alert('Redirecionando para Google Play')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Disponível no Google Play">
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="metadax-socialbadges">
-      <small><a target="_blank" referrerpolicy="nooreferrer"
-          rel="nooreferrer noopener"
-          href="https://linkedin.metadax.com.br">LinkedIn</a></small>
-      <small>|</small>
-      <small><a target="_blank" referrerpolicy="nooreferrer"
-          rel="nooreferrer noopener"
-          href="https://instagram.metadax.com.br">Instagram</a></small>
-      <small>|</small>
-      <small><a target="_blank" referrerpolicy="nooreferrer"
-          rel="nooreferrer noopener"
-          href="https://youtube.metadax.com.br">YouTube</a></small>
-      <small>|</small>
-      <small><a target="_blank" referrerpolicy="nooreferrer"
-          rel="nooreferrer noopener"
-          href="https://github.metadax.com.br">GitHub</a></small>
-      <small>|</small>
-      <small><a target="_blank" referrerpolicy="nooreferrer"
-          rel="nooreferrer noopener"
-          href="https://facebook.metadax.com.br">Facebook</a></small>
-    </div>
-    <div class="metadax-copyright">
-      <div class="metadax-small-metadax-info">
-              Avenida Paulista, nº 1106, Sala 01, Andar 16, Bela Vista, São Paulo, SP, CEP 01310-914, Brasil
-      </div>
-            © 2025 METADAX - 59.324.751/0001-06. Todos os direitos reservados.
-    </div>
-
- <!-- SocialBadges -->
-<div class="metadax-small-socialbadges" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 30px auto 0; padding: 20px 0; max-width: 600px; border-top: 0.5px solid #e0e0e0;">
-  
-  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
-    <img
-      title="Badge de Certificação"
-      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/5image.png"
-      alt="Badge de Certificação"
-      loading="lazy"
-      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
-  </div>
-
-  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
-    <img
-      title="Badge de Certificação"
-      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/6image.png"
-      alt="Badge de Certificação"
-      loading="lazy"
-      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
-  </div>
-
-      <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
-    <img
-      title="Badge de Certificação"
-      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/image.png"
-      alt="Badge de Certificação"
-      loading="lazy"
-      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
-  </div>
-
-  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
-    <img
-      title="Certified Marketing Science Professional"
-      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/Cert_Mar_Sci_Pro_800px.png"
-      alt="Certified Marketing Science Professional"
-      loading="lazy"
-      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
-  </div>
-
-  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
-    <img
-      title="Digital Marketing Associate"
-      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/Digital_Mar_Assoc_800.png"
-      alt="Digital Marketing Associate"
-      loading="lazy"
-      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
-  </div>
-
-  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
-    <img
-      title="Cyber Threat Management"
-      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/cyber-threat-management(1).png"
-      alt="Selo Cyber Threat Management"
-      loading="lazy"
-      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
-  </div>
-
-</div>   
- <!-- SocialBadges -->
     
-  </div>
+    <div class="valora-container-native footer-grid">
+        <div class="footer-brand">
+            <img src="https://cdn.metadax.com.br/assets/images/logo-black.png" alt="METADAX Logo" class="footer-logo">
+            <p class="company-desc">Ecossistema de Valuation e Tecnologias de Dados. Simplificando a gestão de equity para empresas modernas.</p>
+        </div>
+        
+        <div class="footer-links">
+            <div class="link-column">
+                <h4>Produto</h4>
+                <ul>
+                    <li><a href="/">Nova Avaliação</a></li>
+                    <li><a href="/docs">Documentação API</a></li>
+                    <li><a href="/status">Status dos Serviços</a></li>
+                </ul>
+            </div>
+            <div class="link-column">
+                <h4>Institucional</h4>
+                <ul>
+                    <li><a href="https://metadax.com.br" target="_blank">METADAX Global</a></li>
+                    <li><a href="#">Privacidade e Segurança</a></li>
+                    <li><a href="#">Termos de Uso</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <div class="valora-container-native bottom-flex">
+            <p class="copyright">&copy; 2025 METADAX CONSULTORIA LTDA. CNPJ: 65.640.808/0001-89</p>
+            <p class="address">Avenida Getúlio Vargas, 671, Sala 500, Parte 1364, Savassi, Belo Horizonte, MG - CEP 30.112-021</p>
+            <p class="tech-resp">Responsável Técnico: Pedro Paulo Rosemberg da Silva Oliveira</p>
+        </div>
+    </div>
 </footer>
+
+<style>
+/* Footer Nativo Customizado */
+.valora-footer-native {
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    font-family: 'Inter', sans-serif;
+    margin-top: 60px;
+}
+
+/* Banner de Download do APP Mobile */
+.valora-footer-banner {
+    background: linear-gradient(135deg, var(--gold, #0056B3) 0%, #003d82 100%);
+    padding: 40px 24px;
+    color: white;
+}
+.banner-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+}
+.banner-text h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+.banner-text p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    max-width: 600px;
+}
+.banner-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.banner-actions img {
+    height: 48px;
+    transition: transform 0.2s;
+}
+.banner-actions a:hover img {
+    transform: scale(1.05);
+}
+
+/* Footer Main Grid */
+.footer-grid {
+    padding: 60px 24px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+}
+.footer-logo {
+    height: 32px;
+    margin-bottom: 20px;
+}
+.company-desc {
+    color: var(--text-secondary, #495057);
+    line-height: 1.6;
+    max-width: 300px;
+}
+
+.footer-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+.link-column h4 {
+    color: var(--text-primary, #1E1E1E);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+.link-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.link-column a {
+    color: var(--text-secondary, #495057);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.link-column a:hover {
+    color: var(--gold, #0056B3);
+}
+
+/* Footer Bottom (Legal/Address) */
+.footer-bottom {
+    background: #ffffff;
+    border-top: 1px solid #e9ecef;
+    padding: 24px;
+    text-align: center;
+}
+.bottom-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+.footer-bottom p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+/* Tablet & Desktop Layout */
+@media (min-width: 768px) {
+    .banner-content {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+    .footer-grid {
+        grid-template-columns: 1.5fr 2fr;
+    }
+}
+@media (min-width: 1024px) {
+    .bottom-flex {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+}
+</style>
+
 
     <!-- Scripts CDN -->
     <script src="https://cdn.metadax.com.br/components/scripts/whatsapp-button.js"></script>

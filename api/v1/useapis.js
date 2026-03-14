@@ -66,11 +66,11 @@ async function fetchWithCache(url, key, options = {}) {
 
 /**
  * BrasilAPI - CNPJ Data
- * GET /api/v1/useapis/cnpj/:cnpj
+ * POST /api/v1/useapis/cnpj
  */
-router.get('/cnpj/:cnpj', async (req, res) => {
+router.post('/cnpj', async (req, res) => {
   try {
-    const { cnpj } = req.params;
+    const { cnpj } = req.body;
 
     // Validate CNPJ format (14 digits)
     const cnpjClean = cnpj.replace(/\D/g, '');
@@ -126,11 +126,11 @@ router.get('/cnpj/:cnpj', async (req, res) => {
 
 /**
  * ViaCEP - Address Validation
- * GET /api/v1/useapis/cep/:cep
+ * POST /api/v1/useapis/cep
  */
-router.get('/cep/:cep', async (req, res) => {
+router.post('/cep', async (req, res) => {
   try {
-    const { cep } = req.params;
+    const { cep } = req.body;
 
     // Validate CEP format (8 digits)
     const cepClean = cep.replace(/\D/g, '');
@@ -181,11 +181,11 @@ router.get('/cep/:cep', async (req, res) => {
 
 /**
  * METADAX RFN API - Rating Data
- * GET /api/v1/useapis/rfn/:cnpj
+ * POST /api/v1/useapis/rfn
  */
-router.get('/rfn/:cnpj', async (req, res) => {
+router.post('/rfn', async (req, res) => {
   try {
-    const { cnpj } = req.params;
+    const { cnpj } = req.body;
 
     // Validate CNPJ format
     const cnpjClean = cnpj.replace(/\D/g, '');
@@ -218,12 +218,12 @@ router.get('/rfn/:cnpj', async (req, res) => {
 
 /**
  * AXIO API - Business Data
- * POST /api/v1/useapis/axio/:cnpj
+ * POST /api/v1/useapis/axio
  * Fetches business data from AXIO API (https://axio.metadax.com.br/api/data)
  */
-router.post('/axio/:cnpj', async (req, res) => {
+router.post('/axio', async (req, res) => {
   try {
-    const { cnpj } = req.params;
+    const { cnpj } = req.body;
 
     // Validate CNPJ format
     const cnpjClean = cnpj.replace(/\D/g, '');
@@ -268,45 +268,7 @@ router.post('/axio/:cnpj', async (req, res) => {
   }
 });
 
-/**
- * AXIO API - GET version for simpler queries
- * GET /api/v1/useapis/axio/:cnpj
- */
-router.get('/axio/:cnpj', async (req, res) => {
-  try {
-    const { cnpj } = req.params;
-
-    // Validate CNPJ format
-    const cnpjClean = cnpj.replace(/\D/g, '');
-    if (cnpjClean.length !== 14) {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid CNPJ',
-        message: 'CNPJ must contain 14 digits'
-      });
-    }
-
-    const data = await fetchWithCache(
-      `https://axio.metadax.com.br/api/data?cnpj=${cnpjClean}`,
-      `axio:${cnpjClean}`,
-      { ttl: AXIO_CACHE_TTL }
-    );
-
-    res.json({
-      success: true,
-      source: 'AXIO',
-      cnpj: cnpjClean,
-      data: data
-    });
-  } catch (error) {
-    console.error('AXIO API Error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch AXIO data',
-      message: error.message
-    });
-  }
-});
+// (GET AXIO REMOVED FOR SECURITY)
 
 /**
  * METADAX System Status

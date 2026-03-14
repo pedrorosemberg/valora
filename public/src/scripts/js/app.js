@@ -84,6 +84,28 @@ function showAlert(containerId, message, type = 'error') {
   setTimeout(() => el.classList.add('hidden'), 5000);
 }
 
+// ─── Toast Feedback ─────────────────────────────────
+function showToast(message, type = 'success') {
+  let toast = document.getElementById('valoraGlobalToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'valoraGlobalToast';
+    document.body.appendChild(toast);
+  }
+  toast.className = `valora-toast ${type} show`;
+  toast.innerHTML = type === 'success' ? `✓ ${message}` : `⚠ ${message}`;
+  
+  // Haptic feedback for mobile
+  if (window.navigator && window.navigator.vibrate) {
+    if (type === 'error') window.navigator.vibrate([50, 50, 50]);
+    else window.navigator.vibrate([50]);
+  }
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3500);
+}
+
 // ─── API ────────────────────────────────────────────
 async function apiFetch(path, options = {}) {
   const headers = { 'Content-Type': 'application/json', ...options.headers };
@@ -93,13 +115,19 @@ async function apiFetch(path, options = {}) {
 }
 
 async function fetchCNPJData(cnpj) {
-  const data = await apiFetch(`/useapis/cnpj/${cnpj.replace(/\D/g, '')}`);
+  const data = await apiFetch('/useapis/cnpj', {
+    method: 'POST',
+    body: JSON.stringify({ cnpj: cnpj.replace(/\D/g, '') })
+  });
   if (!data.success) throw new Error(data.error || 'Erro ao buscar CNPJ');
   return data.data;
 }
 
 async function fetchCEPData(cep) {
-  const data = await apiFetch(`/useapis/cep/${cep.replace(/\D/g, '')}`);
+  const data = await apiFetch('/useapis/cep', {
+    method: 'POST',
+    body: JSON.stringify({ cep: cep.replace(/\D/g, '') })
+  });
   if (!data.success) throw new Error(data.error || 'Erro ao buscar CEP');
   return data.data;
 }
