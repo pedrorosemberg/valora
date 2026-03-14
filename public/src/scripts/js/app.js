@@ -1,5 +1,5 @@
 /**
- * VALORA by MTDX — Application State & Controller
+ * VALORA by METADAX — Application State & Controller
  * Handles navigation, validation, API calls, UI feedback
  */
 

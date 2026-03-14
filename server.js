@@ -1,5 +1,5 @@
 /**
- * VALORA by MTDX - Server Entry Point
+ * VALORA by METADAX - Server Entry Point
  * Valuation Application for Companies and Personal Equity
  *
  * METADAX TECNOLOGIA E SERVICOS LTDA

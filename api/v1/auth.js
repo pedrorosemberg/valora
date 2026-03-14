@@ -1,5 +1,5 @@
 /**
- * VALORA by MTDX - Authentication & KV Storage
+ * VALORA by METADAX - Authentication & KV Storage
  * Handles user authentication and data persistence with Vercel KV
  */
 
@@ -17,7 +17,7 @@ const USER_DATA_TTL = 90 * 24 * 60 * 60;
 // ============================================================================
 
 /**
- * Validate user access via MTDX API
+ * Validate user access via METADAX API
  */
 async function validateUserAccess(userID) {
   try {

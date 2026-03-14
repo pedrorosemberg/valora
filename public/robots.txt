@@ -1,4 +1,4 @@
-# VALORA by MTDX
+# VALORA by METADAX
 # https://valora.metadax.com.br
 
 User-agent: *

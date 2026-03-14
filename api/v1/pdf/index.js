@@ -1,5 +1,5 @@
 /**
- * VALORA by MTDX — PDF API Endpoint
+ * VALORA by METADAX — PDF API Endpoint
  * Returns structured report data; actual PDF rendered client-side via jsPDF CDN.
  * Server-side PDF generation is available as fallback if needed.
  *

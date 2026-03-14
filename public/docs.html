@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentação - VALORA by MTDX</title>
+    <title>Documentação - VALORA by METADAX</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="src/styles/css/global.css">
+    <link rel="stylesheet" href="/src/styles/css/global.css">
     <style>
         .docs-content {
             max-width: 900px;
@@ -152,27 +152,62 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <span class="logo-text">VALORA</span>
-                <span class="logo-by">by MTDX</span>
-            </div>
-            <nav class="nav">
-                <a href="/" class="nav-link">Início</a>
-                <a href="/docs" class="nav-link active">Documentação</a>
-                <a href="/status" class="nav-link">Status</a>
-            </nav>
-            <div class="header-actions">
-                <a href="/" class="btn btn-primary">Fazer Valuation</a>
-            </div>
+        <header class="metadax-header">
+    <div class="metadax-container">
+        <div class="metadax-header-content">
+            <a href="/" class="metadax-logo-link">
+                <img src="https://cdn.metadax.com.br/assets/images/logo-black.png" alt="metadax Logo">
+            </a>
+
+            <!-- Botão Mobile -->
+            <button class="metadax-menu-toggle" aria-label="Menu" aria-expanded="false" onclick="document.querySelector('.metadax-nav').classList.toggle('active');">
+                ☰
+            </button>
+
+            <!-- Menu Principal -->
+            <ul class="metadax-nav">
+                <li class="metadax-nav-link-item"><a href="https://www.metadax.com.br/faq" target="_blank" referrerpolicy="nooreferrer" rel="nooreferrer noopener" class="metadax-nav-link">Ajuda (FAQ)</a></li>
+                <li class="metadax-nav-link-item">
+                    <button class="metadax-cta-button" onclick="window.open('https://sso.metadax.com.br/', '_blank', 'noopener,noreferrer')">
+                        Login
+                    </button>
+                </li>
+            </ul>
         </div>
-    </header>
+    </div>
+</header>
+
+            <!-- Menu Secundário - Valora -->
+            <nav class="metadax-submenu" style="background: rgba(0, 86, 179, 0.05); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 12px 0;">
+                <div class="metadax-container" style="display: flex; gap: 24px; font-family: 'DM Mono', monospace; font-size: 0.85rem; max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                    <a href="/" style="color: #0056B3; text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Início</a>
+                    <a href="/docs" style="color: #495057; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.3s;" onmouseover="this.style.color='#0056B3'" onmouseout="this.style.color='#495057'">Documentação</a>
+                    <a href="/status" style="color: #495057; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.3s;" onmouseover="this.style.color='#0056B3'" onmouseout="this.style.color='#495057'">Status do Sistema</a>
+                </div>
+            </nav>
+  
+
+            <!-- Menu Secundário - Ecossistema -->
+            <!-- <nav class="metadax-submenu">
+                <div class="metadax-container">
+                    <ul>
+                        <li><a href="https://neovolt.metadax.com.br/" target="_blank" rel="noopener noreferrer">Neovolt</a></li>
+                        <li><a href="https://metadax.com.br/ecossistema/startups/econx/index.html" target="_blank" rel="noopener noreferrer">Econx</a></li>
+                        <li><a href="https://seekpay.metadax.com.br/" target="_blank" rel="noopener noreferrer">SeekPay</a></li>
+                        <li><a href="https://creditix.metadax.com.br/" target="_blank" rel="noopener noreferrer">Creditix</a></li>
+                        <li><a href="https://gurunauta.metadax.com.br/" target="_blank" rel="noopener noreferrer">Gurunauta</a></li>
+                        <li><a href="https://ietesp.metadax.com.br/" target="_blank" rel="noopener noreferrer">IETESP</a></li>
+                        <li><a href="https://veiacriativa.org/" target="_blank" rel="noopener noreferrer">Véia Criativa</a></li>
+                        <li><a href="https://metadax.com.br/marketing/index.html" target="_blank" rel="noopener noreferrer">Agência METADAX</a></li>
+                    </ul>
+                </div>
+            </nav> -->
+
 
     <!-- Main Content -->
     <main class="main">
         <div class="docs-content">
-            <h1>Documentação - VALORA by MTDX</h1>
+            <h1>Documentação - VALORA by METADAX</h1>
 
             <div class="info-box">
                 <h4>📌 Versão 1.1.0 (Atualizado)</h4>
@@ -180,7 +215,7 @@
             </div>
 
             <h2>1. Introdução</h2>
-            <p>O VALORA é uma aplicação web desenvolvida pela MTDX para cálculo de valuation de empresas e equity pessoal. A ferramenta utiliza múltiplas metodologias de avaliação e gera relatórios técnicos profissionais instantaneamente de forma segura na Vercel.</p>
+            <p>O VALORA é uma aplicação web desenvolvida pela METADAX para cálculo de valuation de empresas e equity pessoal. A ferramenta utiliza múltiplas metodologias de avaliação e gera relatórios técnicos profissionais instantaneamente de forma segura na Vercel.</p>
 
             <h3>1.1 Objetivo</h3>
             <p>Calcular o valuation de empresas de todos os portes, utilizando metodologias reconhecidas e integrando dados de APIs públicas e privadas.</p>
@@ -333,7 +368,7 @@
             <p>Hub centralizador de submissões das consultas de CNPJs. Os dados coletados são salvos silenciosamente no endpoint de Data da Metadax utilizando chamadas em back-ground, unificando métricas organizacionais.</p>
             <p><strong>Endpoint Oculto:</strong> <code>POST /api/v1/useapis/axio/{cnpj}</code></p>
 
-            <h3>5.4 APIs MTDX</h3>
+            <h3>5.4 APIs METADAX</h3>
             <ul>
                 <li><strong>RFN API:</strong> Rating de Fontes Negativas</li>
                 <li><strong>System Status:</strong> Validação de licença</li>
@@ -402,11 +437,207 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 METADAX TECNOLOGIA E SERVICOS LTDA. Todos os direitos reservados.</p>
-            <p>Responsável Técnico: Pedro Paulo Rosemberg da Silva Oliveira (CRA-SP 6-009145)</p>
-        </div>
-    </footer>
+    <footer class="metadax-footer">
+  <div class="metadax-container">
+    <div class="metadax-footer-grid">
+      <div class="metadax-footer-section">
+        
+        <h4>Institucional</h4>
+        <ul>
+        <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://grupo.metadax.com.br/">Grupo METADAX</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/">Homepage</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/sobre">Sobre</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/legal">Informações Legais</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/manual-de-marca">Manual de Marca</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/search">Pesquisar</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://robots.metadax.com.br/llm.txt">IA/LLM</a></li>
+        </ul>
+      </div>
+      
+      <div class="metadax-footer-section">
+        <h4>Aplicativos</h4>
+        <ul>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://audiovisual.metadax.com.br/">Projetos
+              Audiovisuais</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://projetos.metadax.com.br/">Projetos
+              de Tecnologia</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://imagen.metadax.com.br/">Gerador de Imagens</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://veiacriativa.metadax.com.br/">Veia Criativa</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://capivara.seg.br/">CAPIVARA.SEG</a></li>
+        </ul>
+      </div>
+      <div class="metadax-footer-section">
+        <h4>Sistemas</h4>
+        <ul>
+        <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/status">Status de Sistemas</a></li>
+            <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/reporte-de-incidentes">Reporte
+              de Incidentes</a></li>
+            <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/abertura-de-chamado">Abrir chamado</a></li>
+        </ul>
+      </div>
+      <div class="metadax-footer-section">
+        <h4>Segurança</h4>
+        <ul>
+                    <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/politica-de-privacidade">Política
+              de Privacidade</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/politica-de-seguranca-da-informacao">Política
+              de Segurança</a></li>
+          <li><a translate="yes" target="_blank" referrerpolicy="nooreferrer"
+              rel="nooreferrer noopener"
+              href="https://www.metadax.com.br/termos-de-uso">Termos
+              de Uso</a></li>
+        </ul>
+      </div>
+      
+      <div class="metadax-footer-section">
+        <h4>Contato</h4>
+        <ul>
+          <li><small><a target="_blank" referrerpolicy="nooreferrer"
+                rel="nooreferrer noopener" href="https://whatsapp.metadax.com.br">+55 11
+                96136-0594</a></small></li>
+          <li><small><a
+                href="mailto:contato@metadax.com.br">contato@metadax.com.br</a></small></li>
+        </ul>
+      </div>
+          
+    </div>
+    <div class="metadax-socialbadges">
+      <small><a target="_blank" referrerpolicy="nooreferrer"
+          rel="nooreferrer noopener"
+          href="https://linkedin.metadax.com.br">LinkedIn</a></small>
+      <small>|</small>
+      <small><a target="_blank" referrerpolicy="nooreferrer"
+          rel="nooreferrer noopener"
+          href="https://instagram.metadax.com.br">Instagram</a></small>
+      <small>|</small>
+      <small><a target="_blank" referrerpolicy="nooreferrer"
+          rel="nooreferrer noopener"
+          href="https://youtube.metadax.com.br">YouTube</a></small>
+      <small>|</small>
+      <small><a target="_blank" referrerpolicy="nooreferrer"
+          rel="nooreferrer noopener"
+          href="https://github.metadax.com.br">GitHub</a></small>
+      <small>|</small>
+      <small><a target="_blank" referrerpolicy="nooreferrer"
+          rel="nooreferrer noopener"
+          href="https://facebook.metadax.com.br">Facebook</a></small>
+    </div>
+    <div class="metadax-copyright">
+      <div class="metadax-small-metadax-info">
+              Avenida Paulista, nº 1106, Sala 01, Andar 16, Bela Vista, São Paulo, SP, CEP 01310-914, Brasil
+      </div>
+            © 2025 METADAX - 59.324.751/0001-06. Todos os direitos reservados.
+    </div>
+
+ <!-- SocialBadges -->
+<div class="metadax-small-socialbadges" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 30px auto 0; padding: 20px 0; max-width: 600px; border-top: 0.5px solid #e0e0e0;">
+  
+  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
+    <img
+      title="Badge de Certificação"
+      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/5image.png"
+      alt="Badge de Certificação"
+      loading="lazy"
+      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
+  </div>
+
+  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
+    <img
+      title="Badge de Certificação"
+      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/6image.png"
+      alt="Badge de Certificação"
+      loading="lazy"
+      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
+  </div>
+
+      <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
+    <img
+      title="Badge de Certificação"
+      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/image.png"
+      alt="Badge de Certificação"
+      loading="lazy"
+      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
+  </div>
+
+  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
+    <img
+      title="Certified Marketing Science Professional"
+      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/Cert_Mar_Sci_Pro_800px.png"
+      alt="Certified Marketing Science Professional"
+      loading="lazy"
+      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
+  </div>
+
+  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
+    <img
+      title="Digital Marketing Associate"
+      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/Digital_Mar_Assoc_800.png"
+      alt="Digital Marketing Associate"
+      loading="lazy"
+      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
+  </div>
+
+  <div class="metadax-small-socialbadges-item" style="flex: 0 0 auto;">
+    <img
+      title="Cyber Threat Management"
+      src="https://cdn.metadax.com.br/assets/badges/mail-icons/100x100px/cyber-threat-management(1).png"
+      alt="Selo Cyber Threat Management"
+      loading="lazy"
+      style="width: 30px; height: 30px; object-fit: contain; pointer-events: none; user-select: none;">
+  </div>
+
+</div>   
+ <!-- SocialBadges -->
+    
+  </div>
+</footer>
+
+
+    <!-- Scripts CDN -->
+    <script src="https://cdn.metadax.com.br/components/scripts/whatsapp-button.js"></script>
+    <script src="https://cdn.metadax.com.br/metadax-loader.js"></script>
+    <script src="https://cdn.metadax.com.br/component-loader.js"></script>
+    <script>
+        // Inicializa o loader com a logo padrão
+        MetadaxLoader.init({
+            logoUrl: 'https://cdn.metadax.com.br/assets/images/loader.png',
+            duration: 1000
+        });
+    </script>
+          
 </body>
 </html>

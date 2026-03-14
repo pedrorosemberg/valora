@@ -1,7 +1,7 @@
 {
   "name": "valora-app",
   "version": "1.0.0",
-  "description": "VALORA by MTDX - Valuation Application for Companies and Personal Equity",
+  "description": "VALORA by METADAX - Valuation Application for Companies and Personal Equity",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

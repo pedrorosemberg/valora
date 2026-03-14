@@ -1,6 +1,6 @@
 /**
- * VALORA by MTDX - External APIs Handler
- * Proxy for BrasilAPI, ViaCEP, MTDX Internal APIs, and AXIO API
+ * VALORA by METADAX - External APIs Handler
+ * Proxy for BrasilAPI, ViaCEP, METADAX Internal APIs, and AXIO API
  *
  * Environment Variables (configure in Vercel Dashboard):
  * - UPSTASH_REDIS_REST_URL: Redis URL for caching (optional)
@@ -180,7 +180,7 @@ router.get('/cep/:cep', async (req, res) => {
 });
 
 /**
- * MTDX RFN API - Rating Data
+ * METADAX RFN API - Rating Data
  * GET /api/v1/useapis/rfn/:cnpj
  */
 router.get('/rfn/:cnpj', async (req, res) => {
@@ -203,7 +203,7 @@ router.get('/rfn/:cnpj', async (req, res) => {
 
     res.json({
       success: true,
-      source: 'MTDX RFN',
+      source: 'METADAX RFN',
       data: data
     });
   } catch (error) {
@@ -309,7 +309,7 @@ router.get('/axio/:cnpj', async (req, res) => {
 });
 
 /**
- * MTDX System Status
+ * METADAX System Status
  * GET /api/v1/useapis/status
  */
 router.get('/status', async (req, res) => {
@@ -323,7 +323,7 @@ router.get('/status', async (req, res) => {
 
     res.json({
       success: true,
-      source: 'MTDX System Status',
+      source: 'METADAX System Status',
       data: data
     });
   } catch (error) {
@@ -337,7 +337,7 @@ router.get('/status', async (req, res) => {
 });
 
 /**
- * MTDX Validate Access
+ * METADAX Validate Access
  * POST /api/v1/useapis/validate
  */
 router.post('/validate', async (req, res) => {
@@ -358,7 +358,7 @@ router.post('/validate', async (req, res) => {
 
     res.json({
       success: true,
-      source: 'MTDX Validate Access',
+      source: 'METADAX Validate Access',
       data: data
     });
   } catch (error) {
@@ -403,7 +403,7 @@ router.post('/combined', async (req, res) => {
           );
           results.rfn = {
             success: true,
-            source: 'MTDX RFN',
+            source: 'METADAX RFN',
             data: rfnData
           };
         } catch (e) {

@@ -1,34 +1,34 @@
-/* VALORA by MTDX — Global Styles
+/* VALORA by METADAX — Global Styles
    Aesthetic: Luxury Finance × Dark Precision
    Inspired by high-end fintech / Bloomberg terminal energy
 */
 
 /* ─── CSS Variables ─────────────────────────────────── */
 :root {
-  --ink: #080c14;
-  --ink-deep: #020407;
-  --ink-mid: #0f1623;
-  --ink-soft: #1a2233;
-  --ink-muted: #232d3f;
+  --ink: #ffffff;
+  --ink-deep: #f8f9fa;
+  --ink-mid: #ffffff;
+  --ink-soft: #f1f3f5;
+  --ink-muted: #e9ecef;
 
-  --gold: #c9a84c;
-  --gold-light: #e4c46b;
-  --gold-dim: #7d6530;
+  --gold: #0056B3;
+  --gold-light: #007bff;
+  --gold-dim: #004085;
 
-  --silver: #a8b4c8;
-  --silver-light: #d4dce8;
-  --silver-dim: #4a5568;
+  --silver: #6c757d;
+  --silver-light: #adb5bd;
+  --silver-dim: #495057;
 
-  --emerald: #00d68f;
-  --scarlet: #ff4757;
+  --emerald: #28a745;
+  --scarlet: #dc3545;
 
-  --text-primary: #e8edf5;
-  --text-secondary: #8a9bb8;
-  --text-muted: #4a5568;
-  --text-inverse: #080c14;
+  --text-primary: #1E1E1E;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --text-inverse: #ffffff;
 
-  --border: #1e2d47;
-  --border-bright: #2a3f5f;
+  --border: #dee2e6;
+  --border-bright: #ced4da;
   --border-gold: rgba(0, 86, 179,0.25);
 
   --shadow: 0 8px 32px rgba(0,0,0,0.5);
@@ -589,7 +589,7 @@ textarea { resize: vertical; min-height: 100px; }
 /* ─── Modal ─────────────────────────────────────────── */
 .modal {
   position: fixed; inset: 0;
-  background: rgba(2,4,7,0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   display: flex; align-items: center; justify-content: center;
   z-index: 1000;
@@ -637,7 +637,7 @@ textarea { resize: vertical; min-height: 100px; }
 /* ─── Loading ──────────────────────────────────────── */
 .loading-overlay {
   position: fixed; inset: 0;
-  background: rgba(8,12,20,0.92);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
   z-index: 2000;

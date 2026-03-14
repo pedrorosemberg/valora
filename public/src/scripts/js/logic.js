@@ -1,5 +1,5 @@
 /**
- * VALORA by MTDX — PDF Generation & Chart Logic
+ * VALORA by METADAX — PDF Generation & Chart Logic
  * Uses jsPDF (CDN) and Chart.js (CDN) loaded in index.html
  */
 
@@ -57,7 +57,7 @@ window.generateClientPDF = function(formData, valuationResult, reportType) {
   doc.setTextColor(...PDF_COLORS.textMuted);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'normal');
-  doc.text('by MTDX — Parecer Técnico de Valuation', margin, y + 22);
+  doc.text('by METADAX — Parecer Técnico de Valuation', margin, y + 22);
 
   y += 36;
 

@@ -1,5 +1,5 @@
 /**
- * VALORA by MTDX — API Routers
+ * VALORA by METADAX — API Routers
  * Routes for all API endpoints
  */
 
@@ -15,7 +15,7 @@ const authHandler = require('./api/v1/auth');
 router.get('/health', (req, res) => {
   res.json({
     status: 'ok',
-    service: 'VALORA by MTDX',
+    service: 'VALORA by METADAX',
     version: '1.0.0',
     timestamp: new Date().toISOString()
   });

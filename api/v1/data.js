@@ -1,5 +1,5 @@
 /**
- * VALORA by MTDX - Valuation Calculation Engine
+ * VALORA by METADAX - Valuation Calculation Engine
  * Implements multiple valuation methodologies with variable weights
  *
  * METADAX TECNOLOGIA E SERVICOS LTDA
