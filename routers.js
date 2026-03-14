@@ -10,6 +10,7 @@ const router = express.Router();
 const useApisHandler = require('./api/v1/useapis');
 const dataHandler = require('./api/v1/data');
 const pdfHandler = require('./api/v1/pdf');
+const authHandler = require('./api/v1/auth');
 
 // Health check
 router.get('/health', (req, res) => {
@@ -53,5 +54,9 @@ router.use('/v1/data', dataHandler);
 
 // PDF generation
 router.use('/v1/pdf', pdfHandler);
+
+// Authentication & User Data
+router.use('/v1/auth', authHandler);
+router.use('/v1/data', authHandler);
 
 module.exports = router;
