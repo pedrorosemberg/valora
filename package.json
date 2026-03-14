@@ -1,0 +1,34 @@
+{
+  "name": "valora-app",
+  "version": "1.0.0",
+  "description": "VALORA by MTDX - Valuation Application for Companies and Personal Equity",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "vercel": "vercel dev"
+  },
+  "keywords": [
+    "valuation",
+    "equity",
+    "business",
+    "finance",
+    "metadax"
+  ],
+  "author": "METADAX TECNOLOGIA E SERVICOS LTDA",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/kv": "^1.0.1",
+    "chart.js": "^4.4.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.1"
+  },
+  "devDependencies": {
+    "vercel": "^33.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

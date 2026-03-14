@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORA by MTDX - Valuation App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/css/global.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-text">VALORA</span>
+                <span class="logo-by">by MTDX</span>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link active">Início</a>
+                <a href="/docs" class="nav-link">Documentação</a>
+                <a href="/status" class="nav-link">Status</a>
+            </nav>
+            <div class="header-actions">
+                <button id="loginBtn" class="btn btn-outline">Entrar</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2>Acessar VALORA</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="userID">ID do Usuário</label>
+                    <input type="text" id="userID" name="userID" placeholder="Digite seu ID de usuário" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Acessar</button>
+            </form>
+            <p class="modal-info">Não tem acesso? Entre em contato com contato@metadax.com.br</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps" id="progressSteps">
+                <div class="step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-label">Tipo de Empresa</span>
+                </div>
+                <div class="step" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Dados Básicos</span>
+                </div>
+                <div class="step" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Desempenho</span>
+                </div>
+                <div class="step" data-step="4">
+                    <span class="step-number">4</span>
+                    <span class="step-label">Mercado</span>
+                </div>
+                <div class="step" data-step="5">
+                    <span class="step-number">5</span>
+                    <span class="step-label">Pessoas</span>
+                </div>
+                <div class="step" data-step="6">
+                    <span class="step-number">6</span>
+                    <span class="step-label">Capital</span>
+                </div>
+                <div class="step" data-step="7">
+                    <span class="step-number">7</span>
+                    <span class="step-label">Empresa</span>
+                </div>
+                <div class="step" data-step="8">
+                    <span class="step-number">8</span>
+                    <span class="step-label">Resumo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form id="valuationForm" class="valuation-form">
+
+                <!-- Step 1: Tipo de Empresa -->
+                <div class="form-step active" data-step="1">
+                    <h2 class="step-title">Qual é o tipo da sua empresa?</h2>
+                    <p class="step-description">Selecione o tipo que melhor descreve sua empresa para uma análise mais precisa.</p>
+
+                    <div class="option-cards">
+                        <label class="option-card">
+                            <input type="radio" name="companyType" value="traditional" required>
+                            <div class="option-content">
+                                <span class="option-icon">🏢</span>
+                                <span class="option-title">Empresa Tradicional</span>
+                                <span class="option-desc">Empresas do mercado tradicional geradoras de caixa</span>
+                            </div>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="companyType" value="newEconomy">
+                            <div class="option-content">
+                                <span class="option-icon">🚀</span>
+                                <span class="option-title">Nova Economia</span>
+                                <span class="option-desc">Negócio tradicional evoluído com tecnologia</span>
+                            </div>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="companyType" value="startup">
+                            <div class="option-content">
+                                <span class="option-icon">💡</span>
+                                <span class="option-title">Startup</span>
+                                <span class="option-desc">Negócio inovador de rápido crescimento</span>
+                            </div>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="companyType" value="personalEquity">
+                            <div class="option-content">
+                                <span class="option-icon">👤</span>
+                                <span class="option-title">Equity Pessoal</span>
+                                <span class="option-desc">Valuation para pessoas físicas e profissionais</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 2: Dados Básicos (Informações do Sócio) -->
+                <div class="form-step" data-step="2">
+                    <h2 class="step-title">Informações Básicas</h2>
+                    <p class="step-description">Forneça informações sobre o setor e o faturamento da empresa.</p>
+
+                    <div class="form-group">
+                        <label for="industry">Qual é o seu tipo de atuação?</label>
+                        <select id="industry" name="industry" required>
+                            <option value="">Selecione...</option>
+                            <option value="Tecnologia/SaaS">Tecnologia/SaaS</option>
+                            <option value="E-commerce/Marketplace">E-commerce/Marketplace</option>
+                            <option value="Indústria tradicional">Indústria tradicional</option>
+                            <option value="Serviços financeiros e bancários/fintech">Serviços financeiros e bancários/fintech</option>
+                            <option value="Saúde">Saúde</option>
+                            <option value="Educação">Educação</option>
+                            <option value="Agronegócio">Agronegócio</option>
+                            <option value="Foodtech">Foodtech</option>
+                            <option value="Serviços B2B Tradicionais">Serviços B2B Tradicionais</option>
+                            <option value="Energia e Sustentabilidade">Energia e Sustentabilidade</option>
+                            <option value="Varejo físico">Varejo físico</option>
+                            <option value="Logística e Transporte">Logística e Transporte</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="revenue">Faturamento bruto nos últimos 12 meses (LTM)</label>
+                        <div class="input-prefix">
+                            <span class="prefix">R$</span>
+                            <input type="text" id="revenue" name="revenue" placeholder="0" inputmode="numeric" required>
+                        </div>
+                        <span class="form-hint">Informe o valor total do faturamento bruto dos últimos 12 meses</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="revenueNTM">Faturamento bruto estimado para os próximos 12 meses (NTM)</label>
+                        <div class="input-prefix">
+                            <span class="prefix">R$</span>
+                            <input type="text" id="revenueNTM" name="revenueNTM" placeholder="0" inputmode="numeric">
+                        </div>
+                        <span class="form-hint">Informe o valor total do faturamento bruto estimado para os próximos 12 meses</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ebitda">EBITDA em %</label>
+                        <div class="input-suffix">
+                            <input type="number" id="ebitda" name="ebitda" placeholder="0" min="0" max="100" step="0.1">
+                            <span class="suffix">%</span>
+                        </div>
+                        <span class="form-hint">É o lucro bruto em porcentagem do faturamento bruto</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assets">Ativos tangíveis</label>
+                        <div class="input-prefix">
+                            <span class="prefix">R$</span>
+                            <input type="text" id="assets" name="assets" placeholder="0" inputmode="numeric">
+                        </div>
+                        <span class="form-hint">Valor de mercado estimado de ativos físicos (imóveis, equipamentos, veículos, estoques)</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="investments">Participações em outras empresas</label>
+                        <div class="input-prefix">
+                            <span class="prefix">R$</span>
+                            <input type="text" id="investments" name="investments" placeholder="0" inputmode="numeric">
+                        </div>
+                        <span class="form-hint">Valor estimado de participações societárias em outras empresas</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="debt">Endividamento total</label>
+                        <div class="input-prefix">
+                            <span class="prefix">R$</span>
+                            <input type="text" id="debt" name="debt" placeholder="0" inputmode="numeric">
+                        </div>
+                        <span class="form-hint">Soma total de todas as dívidas (empréstimos, financiamentos, etc.)</span>
+                    </div>
+                </div>
+
+                <!-- Step 3: Desempenho e Eficiência -->
+                <div class="form-step" data-step="3">
+                    <h2 class="step-title">Desempenho e Eficiência</h2>
+                    <p class="step-description">Avalie o desempenho e eficiência operacional da empresa.</p>
+
+                    <div class="form-group">
+                        <label for="P">Taxa de crescimento médio anual (últimos 3 anos)</label>
+                        <select id="P" name="P" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Negativo ou estável</option>
+                            <option value="2">Até 10%</option>
+                            <option value="3">Entre 10% e 30%</option>
+                            <option value="4">Acima de 30%</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Q">Nível de recorrência de receita</label>
+                        <select id="Q" name="Q" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nenhuma</option>
+                            <option value="2">Parcial (até 30%)</option>
+                            <option value="3">Moderada (30% a 70%)</option>
+                            <option value="4">Alta (mais de 70%)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="R">Dependência do fundador/dono para os resultados</label>
+                        <select id="R" name="R" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Totalmente dependente</option>
+                            <option value="2">Parcialmente dependente</option>
+                            <option value="3">Pouco dependente</option>
+                            <option value="4">Independente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="S">Meses de sobrevivência sem receita (Runway)</label>
+                        <select id="S" name="S" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Menos de 3 meses</option>
+                            <option value="2">Entre 3 e 6 meses</option>
+                            <option value="3">Entre 6 e 12 meses</option>
+                            <option value="4">Mais de 12 meses</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 4: Mercado e Estratégia -->
+                <div class="form-step" data-step="4">
+                    <h2 class="step-title">Mercado e Estratégia</h2>
+                    <p class="step-description">Avalie a posição da empresa no mercado e sua estratégia.</p>
+
+                    <div class="form-group">
+                        <label for="T">Como está seu Soft Equity?</label>
+                        <select id="T" name="T" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Baixo - Marca desconhecida</option>
+                            <option value="2">Básico - Algum reconhecimento local</option>
+                            <option value="3">Bom - Marca reconhecida no setor</option>
+                            <option value="4">Alto - Marca consolidada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="U">Como está o mercado de atuação?</label>
+                        <select id="U" name="U" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Em retração</option>
+                            <option value="2">Estável</option>
+                            <option value="3">Em crescimento</option>
+                            <option value="4">Em expansão acelerada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="V">Quem são os principais concorrentes?</label>
+                        <select id="V" name="V" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Multinacionais fortes</option>
+                            <option value="2">Empresas nacionais consolidadas</option>
+                            <option value="3">Pequenos players regionais</option>
+                            <option value="4">Não há concorrentes diretos</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="W">Possui diferenciais competitivos claros?</label>
+                        <select id="W" name="W" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não possui</option>
+                            <option value="2">Poucos diferenciais</option>
+                            <option value="3">Diferenciais relevantes</option>
+                            <option value="4">Diferenciais únicos e defensáveis</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="X">Como estão os processos e controles?</label>
+                        <select id="X" name="X" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Inexistentes</option>
+                            <option value="2">Em construção</option>
+                            <option value="3">Já implantados</option>
+                            <option value="4">Altamente maduros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Y">Possui conselho consultivo/administração?</label>
+                        <select id="Y" name="Y" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não existe</option>
+                            <option value="2">Informal</option>
+                            <option value="3">Formal pouco atuante</option>
+                            <option value="4">Formal atuante</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Z">Nível de escalabilidade do modelo</label>
+                        <select id="Z" name="Z" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Baixa - depende de mão de obra intensiva</option>
+                            <option value="2">Moderada - alguns processos replicáveis</option>
+                            <option value="3">Alta - modelo escalável com tecnologia</option>
+                            <option value="4">Muito alta - escalabilidade global</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AA">Já tiveram interessados em investir no seu negócio?</label>
+                        <select id="AA" name="AA" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nunca</option>
+                            <option value="2">Interesse inicial sem proposta formal</option>
+                            <option value="3">Proposta concreta não concluída</option>
+                            <option value="4">Já recebeu aporte ou investimento</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 5: Pessoas e Bens Intangíveis -->
+                <div class="form-step" data-step="5">
+                    <h2 class="step-title">Pessoas e Bens Intangíveis</h2>
+                    <p class="step-description">Avalie os aspectos humanos e intangíveis da empresa.</p>
+
+                    <div class="form-group">
+                        <label for="BB">Como está seu People Equity?</label>
+                        <select id="BB" name="BB" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Baixo - Time desorganizado</option>
+                            <option value="2">Básico - Equipe em formação</option>
+                            <option value="3">Bom - Equipe competente</option>
+                            <option value="4">Alto - Time de alta performance</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CC">Como está a base de clientes?</label>
+                        <select id="CC" name="CC" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Concentrada em poucos clientes</option>
+                            <option value="2">Dependência moderada</option>
+                            <option value="3">Base diversificada</option>
+                            <option value="4">Base recorrente, diversificada e engajada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DD">Possui propriedade intelectual relevante?</label>
+                        <select id="DD" name="DD" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não possui</option>
+                            <option value="2">Registros básicos (marca, domínio)</option>
+                            <option value="3">Metodologias próprias</option>
+                            <option value="4">Patentes ou tecnologia defensável</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EE">Nível de networking e parcerias estratégicas</label>
+                        <select id="EE" name="EE" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Rede limitada</option>
+                            <option value="2">Algumas conexões</option>
+                            <option value="3">Boa rede de parcerias</option>
+                            <option value="4">Networking estratégico e ativo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="FF">Práticas de ESG (sustentabilidade, ética, governança)</label>
+                        <select id="FF" name="FF" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Sem práticas</option>
+                            <option value="2">Algumas práticas isoladas</option>
+                            <option value="3">Políticas estruturadas</option>
+                            <option value="4">ESG integrado à estratégia</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="GG">Participação em comunidade e ecossistema</label>
+                        <select id="GG" name="GG" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Atua isoladamente</option>
+                            <option value="2">Participa pontualmente</option>
+                            <option value="3">Integra ecossistema</option>
+                            <option value="4">Possui comunidade própria e influência</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 6: Capital (Interno, Externo, Resultado) -->
+                <div class="form-step" data-step="6">
+                    <h2 class="step-title">Capital Interno, Externo e de Resultado</h2>
+                    <p class="step-description">Avalie os três capitais essenciais da empresa.</p>
+
+                    <div class="section-divider">
+                        <h3>Capital Interno</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HH">Seu conhecimento resolve problemas reais de outras pessoas?</label>
+                        <select id="HH" name="HH" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não resolve</option>
+                            <option value="2">Resolve pouco</option>
+                            <option value="3">Resolve bem</option>
+                            <option value="4">É referência</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="II">Esse conhecimento está atualizado?</label>
+                        <select id="II" name="II" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Desatualizado</option>
+                            <option value="2">Parcialmente</option>
+                            <option value="3">Atualizado</option>
+                            <option value="4">Na vanguarda</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="JJ">Pessoas te procuram por esse conhecimento?</label>
+                        <select id="JJ" name="JJ" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nunca</option>
+                            <option value="2">Raramente</option>
+                            <option value="3">Frequentemente</option>
+                            <option value="4">Constantemente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="KK">Você consegue ensinar ou transferir o que sabe?</label>
+                        <select id="KK" name="KK" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não consigo</option>
+                            <option value="2">Com dificuldade</option>
+                            <option value="3">Consigo bem</option>
+                            <option value="4">Sou reconhecido como mentor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LL">Você conclui o que começa?</label>
+                        <select id="LL" name="LL" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Raramente</option>
+                            <option value="2">Às vezes</option>
+                            <option value="3">Quase sempre</option>
+                            <option value="4">Sempre</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MM">Sua produtividade é previsível e consistente?</label>
+                        <select id="MM" name="MM" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Imprevisível</option>
+                            <option value="2">Oscila muito</option>
+                            <option value="3">Estável</option>
+                            <option value="4">Altamente previsível</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NN">Você cria sistemas e processos para suas entregas?</label>
+                        <select id="NN" name="NN" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não crio</option>
+                            <option value="2">Poucos</option>
+                            <option value="3">Vários</option>
+                            <option value="4">Sistematizo tudo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="OO">Você se autogerencia sem precisar de pressão externa?</label>
+                        <select id="OO" name="OO" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Preciso de pressão</option>
+                            <option value="2">Às vezes</option>
+                            <option value="3">Geralmente</option>
+                            <option value="4">Sou autogerido</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PP">Você aprende e evolui com seus erros?</label>
+                        <select id="PP" name="PP" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Repito erros</option>
+                            <option value="2">Às vezes</option>
+                            <option value="3">Geralmente</option>
+                            <option value="4">Sempre transformo em aprendizado</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="QQ">Você sabe dizer não para proteger seu foco?</label>
+                        <select id="QQ" name="QQ" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não consigo</option>
+                            <option value="2">Com dificuldade</option>
+                            <option value="3">Geralmente</option>
+                            <option value="4">Com clareza</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RR">Suas decisões são baseadas em consciência, não impulso?</label>
+                        <select id="RR" name="RR" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Sempre impulso</option>
+                            <option value="2">Mais impulso</option>
+                            <option value="3">Mais consciência</option>
+                            <option value="4">Sempre consciência</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="SS">Você prioriza o longo prazo nas decisões importantes?</label>
+                        <select id="SS" name="SS" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nunca</option>
+                            <option value="2">Às vezes</option>
+                            <option value="3">Frequentemente</option>
+                            <option value="4">É meu padrão</option>
+                        </select>
+                    </div>
+
+                    <div class="section-divider">
+                        <h3>Capital Externo</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TT">Você entrega o que promete, consistentemente?</label>
+                        <select id="TT" name="TT" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Raramente</option>
+                            <option value="2">Às vezes</option>
+                            <option value="3">Quase sempre</option>
+                            <option value="4">Sempre</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="UU">Seu histórico profissional é coerente e defensável?</label>
+                        <select id="UU" name="UU" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Fragmentado</option>
+                            <option value="2">Parcialmente</option>
+                            <option value="3">Coerente</option>
+                            <option value="4">Muito coerente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="VV">Seu nome abre portas no seu mercado?</label>
+                        <select id="VV" name="VV" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não</option>
+                            <option value="2">Às vezes</option>
+                            <option value="3">Frequentemente</option>
+                            <option value="4">É minha maior credencial</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="WW">As pessoas confiam em você em situações de pressão?</label>
+                        <select id="WW" name="WW" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não</option>
+                            <option value="2">Alguns confiam</option>
+                            <option value="3">Maioria confia</option>
+                            <option value="4">Totalmente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="XX">Sua rede tem pessoas estratégicas para seus objetivos?</label>
+                        <select id="XX" name="XX" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não tem</option>
+                            <option value="2">Poucas</option>
+                            <option value="3">Várias</option>
+                            <option value="4">Rede estratégica</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="YY">Você mantém e cultiva relações de longo prazo?</label>
+                        <select id="YY" name="YY" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não mantenho</option>
+                            <option value="2">Alguns</option>
+                            <option value="3">A maioria</option>
+                            <option value="4">Cultivo ativamente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ZZ">Você agrega valor antes de pedir algo em troca?</label>
+                        <select id="ZZ" name="ZZ" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nunca</option>
+                            <option value="2">Às vezes</option>
+                            <option value="3">Frequentemente</option>
+                            <option value="4">É meu padrão</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="AAA">Você recebe oportunidades por indicação espontânea?</label>
+                        <select id="AAA" name="AAA" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nunca</option>
+                            <option value="2">Raramente</option>
+                            <option value="3">Várias vezes</option>
+                            <option value="4">É minha principal fonte</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="BBB">As pessoas sabem exatamente pelo que você é referência?</label>
+                        <select id="BBB" name="BBB" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não sabem</option>
+                            <option value="2">Vagamente</option>
+                            <option value="3">Têm uma ideia</option>
+                            <option value="4">Sabem claramente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CCC">Seu posicionamento é claro e diferenciado?</label>
+                        <select id="CCC" name="CCC" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Confuso</option>
+                            <option value="2">Em construção</option>
+                            <option value="3">Claro</option>
+                            <option value="4">Único e memorável</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DDD">Sua comunicação gera percepção de autoridade?</label>
+                        <select id="DDD" name="DDD" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não gera</option>
+                            <option value="2">Pouca</option>
+                            <option value="3">Boa autoridade</option>
+                            <option value="4">Alta autoridade</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="EEE">Você é lembrado por um tema ou território específico?</label>
+                        <select id="EEE" name="EEE" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não</option>
+                            <option value="2">Por vários temas</option>
+                            <option value="3">Por um tema</option>
+                            <option value="4">Sou sinônimo do tema</option>
+                        </select>
+                    </div>
+
+                    <div class="section-divider">
+                        <h3>Capital de Resultado</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="FFF">Sua renda cresce sem aumento proporcional de horas?</label>
+                        <select id="FFF" name="FFF" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não</option>
+                            <option value="2">Pouco</option>
+                            <option value="3">Moderadamente</option>
+                            <option value="4">Significativamente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="GGG">Você possui renda recorrente ou previsível?</label>
+                        <select id="GGG" name="GGG" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nenhuma</option>
+                            <option value="2">Até 30%</option>
+                            <option value="3">30-70%</option>
+                            <option value="4">Mais de 70%</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="HHH">Você converte tempo em ativos?</label>
+                        <select id="HHH" name="HHH" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nunca</option>
+                            <option value="2">Raramente</option>
+                            <option value="3">Frequentemente</option>
+                            <option value="4">É minha estratégia</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="III">Presença digital (avalie suas redes)</label>
+                        <select id="III" name="III" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">LinkedIn</option>
+                            <option value="2">Instagram</option>
+                            <option value="3">YouTube</option>
+                            <option value="4">Podcast</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="JJJ">Seu nome gera convites e oportunidades espontâneas?</label>
+                        <select id="JJJ" name="JJJ" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Nunca</option>
+                            <option value="2">Raramente</option>
+                            <option value="3">Frequentemente</option>
+                            <option value="4">Constantemente</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="KKK">Seu conteúdo trabalha por você?</label>
+                        <select id="KKK" name="KKK" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não</option>
+                            <option value="2">Pouco</option>
+                            <option value="3">Moderadamente</option>
+                            <option value="4">Muito</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LLL">Você possui ativos escaláveis?</label>
+                        <select id="LLL" name="LLL" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não tenho</option>
+                            <option value="2">Um ou dois</option>
+                            <option value="3">Vários</option>
+                            <option value="4">É minha estratégia central</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="MMM">Você monetiza sem presença física?</label>
+                        <select id="MMM" name="MMM" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não</option>
+                            <option value="2">Pouco</option>
+                            <option value="3">Boa parte</option>
+                            <option value="4">Maioria da minha renda</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NNN">Você está construindo algo que transcende você?</label>
+                        <select id="NNN" name="NNN" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Não</option>
+                            <option value="2">Começando</option>
+                            <option value="3">Em construção</option>
+                            <option value="4">Já existe legado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Step 7: Dados da Empresa -->
+                <div class="form-step" data-step="7">
+                    <h2 class="step-title">Dados da Empresa</h2>
+                    <p class="step-description">Informe os dados cadastrais da empresa. O CNPJ será usado para buscar informações automaticamente.</p>
+
+                    <div class="form-group">
+                        <label for="cnpj">CNPJ da empresa</label>
+                        <div class="input-with-button">
+                            <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" maxlength="18">
+                            <button type="button" id="searchCnpjBtn" class="btn btn-secondary">Buscar</button>
+                        </div>
+                        <span class="form-hint">Digite o CNPJ para buscar informações automaticamente</span>
+                    </div>
+
+                    <div id="companyInfo" class="company-info hidden">
+                        <div class="info-card">
+                            <span class="info-label">Razão Social</span>
+                            <span id="razaoSocial" class="info-value">-</span>
+                        </div>
+                        <div class="info-card">
+                            <span class="info-label">Nome Fantasia</span>
+                            <span id="nomeFantasia" class="info-value">-</span>
+                        </div>
+                        <div class="info-card">
+                            <span class="info-label">Situação Cadastral</span>
+                            <span id="situacaoCadastral" class="info-value">-</span>
+                        </div>
+                        <div class="info-card">
+                            <span class="info-label">Porte</span>
+                            <span id="porte" class="info-value">-</span>
+                        </div>
+                        <div class="info-card">
+                            <span class="info-label">Data de Abertura</span>
+                            <span id="dataAbertura" class="info-value">-</span>
+                        </div>
+                        <div class="info-card">
+                            <span class="info-label">Endereço</span>
+                            <span id="endereco" class="info-value">-</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cep">CEP</label>
+                        <div class="input-with-button">
+                            <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9">
+                            <button type="button" id="searchCepBtn" class="btn btn-secondary">Buscar</button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="logradouro">Logradouro</label>
+                            <input type="text" id="logradouro" name="logradouro" placeholder="Rua, Avenida...">
+                        </div>
+                        <div class="form-group flex-2">
+                            <label for="numero">Número</label>
+                            <input type="text" id="numero" name="numero" placeholder="Número">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" id="complemento" name="complemento" placeholder="Sala, Andar...">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" id="bairro" name="bairro" placeholder="Bairro">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" id="cidade" name="cidade" placeholder="Cidade">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="estado">Estado</label>
+                            <input type="text" id="estado" name="estado" placeholder="UF" maxlength="2">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="website">Website</label>
+                        <input type="url" id="website" name="website" placeholder="https://suaempresa.com.br">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="partnerCount">Quantidade de sócios no quadro societário</label>
+                        <input type="number" id="partnerCount" name="partnerCount" min="1" max="100" value="1">
+                        <span class="form-hint">Inclua todos os sócios formais ou informais, contando com você</span>
+                    </div>
+
+                    <!-- Startup-specific fields (conditionally shown) -->
+                    <div id="startupFields" class="hidden">
+                        <div class="section-divider">
+                            <h3>Campos Adicionais para Startups</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tam">Total Addressable Market (TAM)</label>
+                            <div class="input-prefix">
+                                <span class="prefix">R$</span>
+                                <input type="text" id="tam" name="tam" placeholder="0" inputmode="numeric">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sam">Serviceable Addressable Market (SAM)</label>
+                            <div class="input-prefix">
+                                <span class="prefix">R$</span>
+                                <input type="text" id="sam" name="sam" placeholder="0" inputmode="numeric">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="users">Número de usuários/clientes</label>
+                            <input type="number" id="users" name="users" placeholder="0" min="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productStage">Estágio do produto</label>
+                            <select id="productStage" name="productStage">
+                                <option value="">Selecione...</option>
+                                <option value="idea">Ideia</option>
+                                <option value="prototype">Protótipo</option>
+                                <option value="mvp">MVP</option>
+                                <option value="growth">Crescimento</option>
+                                <option value="mature">Maduro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="funding">Total de investimentos recebidos</label>
+                            <div class="input-prefix">
+                                <span class="prefix">R$</span>
+                                <input type="text" id="funding" name="funding" placeholder="0" inputmode="numeric">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 8: Resumo e Relatório -->
+                <div class="form-step" data-step="8">
+                    <h2 class="step-title">Resumo e Tipo de Relatório</h2>
+                    <p class="step-description">Revise seus dados e escolha o tipo de relatório.</p>
+
+                    <div id="summaryContainer" class="summary-container">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+
+                    <div class="report-type-selection">
+                        <h3>Tipo de Relatório</h3>
+                        <div class="option-cards">
+                            <label class="option-card">
+                                <input type="radio" name="reportType" value="personal" required>
+                                <div class="option-content">
+                                    <span class="option-icon">👤</span>
+                                    <span class="option-title">Relatório Pessoal</span>
+                                    <span class="option-desc">Somente informações do sócio</span>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="reportType" value="business">
+                                <div class="option-content">
+                                    <span class="option-icon">🏢</span>
+                                    <span class="option-title">Relatório Empresarial</span>
+                                    <span class="option-desc">Dados da empresa (sem rating RFN)</span>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="reportType" value="complete">
+                                <div class="option-content">
+                                    <span class="option-icon">📊</span>
+                                    <span class="option-title">Relatório Completo</span>
+                                    <span class="option-desc">Empresa + Sócio + Rating RFN</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="terms-acceptance">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="acceptTerms" name="acceptTerms" required>
+                            <span>Li e aceito os <a href="/docs" target="_blank">Termos de Uso</a> e <a href="/docs" target="_blank">Política de Privacidade</a></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                    <button type="button" id="prevBtn" class="btn btn-outline" disabled>Anterior</button>
+                    <button type="button" id="nextBtn" class="btn btn-primary">Próximo</button>
+                    <button type="submit" id="submitBtn" class="btn btn-success hidden">Gerar Relatório</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 METADAX TECNOLOGIA E SERVICOS LTDA. Todos os direitos reservados.</p>
+            <p>Responsável Técnico: Pedro Paulo Rosemberg da Silva Oliveira (CRA-SP 6-009145)</p>
+            <p class="footer-links">
+                <a href="/docs">Termos de Uso</a>
+                <span>•</span>
+                <a href="/docs">Política de Privacidade</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+        <p>Processando...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="src/scripts/js/app.js"></script>
+    <script src="src/scripts/js/logic.js"></script>
+</body>
+</html>
