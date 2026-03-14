@@ -3,7 +3,8 @@
  * Handles user authentication and data persistence with Vercel KV
  */
 
-const { kv } = require('@vercel/kv');
+const { Redis } = require('@upstash/redis');
+const kv = Redis.fromEnv();
 
 // User session TTL (7 days)
 const SESSION_TTL = 7 * 24 * 60 * 60;
