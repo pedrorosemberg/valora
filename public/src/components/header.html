@@ -17,21 +17,13 @@
                 <li><a href="/docs" class="valora-nav-link">Documentação</a></li>
                 <li><a href="/status" class="valora-nav-link">Status</a></li>
                 <li><a href="https://www.metadax.com.br/faq" target="_blank" rel="noopener noreferrer" class="valora-nav-link">Ajuda (FAQ)</a></li>
-                <li class="valora-nav-actions">
-                    <button class="btn btn-primary valora-login-btn" onclick="window.open('https://sso.metadax.com.br/', '_blank')">Login SSO</button>
-                    <!-- Download App Mobile Button - Only visible on small screens / inside menu context -->
-                    <a href="#download-app" class="btn btn-outline valora-app-btn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                        Baixar App Native
-                    </a>
-                </li>
             </ul>
         </nav>
     </div>
 </header>
 
 <style>
-/* Header Nativo Customizado - Mobile First */
+/* Header Nativo Customizado - Clean (Sem Login/App) */
 .valora-header-native {
     background: #ffffff;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -44,7 +36,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 24px;
+    padding: 1-6px 24px;
     max-width: 1280px;
     margin: 0 auto;
 }
@@ -60,7 +52,7 @@
     border: none;
     cursor: pointer;
     padding: 8px;
-    z-index: 1001; /* Above menu */
+    z-index: 1001;
 }
 .valora-menu-toggle span {
     display: block;
@@ -79,7 +71,7 @@
     background: #ffffff;
     padding: 20px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    display: none; /* hidden by default on mobile */
+    display: none; 
     flex-direction: column;
 }
 .valora-nav-native.active {
@@ -104,50 +96,7 @@
 .valora-nav-link:hover, .valora-nav-link.active {
     color: var(--gold, #0056B3);
 }
-.valora-nav-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    margin-top: 12px;
-    padding-top: 20px;
-    border-top: 1px solid #f0f0f0;
-}
-.valora-nav-actions .btn {
-    width: 100%;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.valora-app-btn {
-    border: 1px solid var(--gold, #0056B3);
-    color: var(--gold, #0056B3);
-    background: transparent;
-}
-.valora-app-btn:hover {
-    background: rgba(0, 86, 179, 0.05);
-}
 
-/* Base Buttons Fallback */
-.btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 0.95rem;
-}
-.btn-primary {
-    background: var(--gold, #0056B3);
-    color: #ffffff;
-    border: none;
-}
-.btn-primary:hover {
-    background: #004494; /* darker blue */
-}
-
-/* Tablet & Desktop Layout */
 @media (min-width: 992px) {
     .valora-menu-toggle {
         display: none;
@@ -168,17 +117,6 @@
     }
     .valora-nav-link {
         font-size: 0.95rem;
-    }
-    .valora-nav-actions {
-        flex-direction: row;
-        width: auto;
-        margin-top: 0;
-        padding-top: 0;
-        border-top: none;
-        margin-left: 16px;
-    }
-    .valora-nav-actions .btn {
-        width: auto;
     }
 }
 </style>
