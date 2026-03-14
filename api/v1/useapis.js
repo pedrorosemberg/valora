@@ -1,38 +1,67 @@
 /**
  * VALORA by MTDX - External APIs Handler
- * Proxy for BrasilAPI, ViaCEP, and MTDX Internal APIs
+ * Proxy for BrasilAPI, ViaCEP, MTDX Internal APIs, and AXIO API
+ *
+ * Environment Variables (configure in Vercel Dashboard):
+ * - UPSTASH_REDIS_REST_URL: Redis URL for caching (optional)
+ * - UPSTASH_REDIS_REST_TOKEN: Redis token (optional)
  */
 
 const express = require('express');
 const router = express.Router();
 
-// Cache for API responses (simple in-memory cache)
+// Cache for API responses (simple in-memory cache with TTL)
 const cache = new Map();
 const CACHE_TTL = 3600000; // 1 hour
+const AXIO_CACHE_TTL = 86400000; // 24 hours for AXIO data (changes less frequently)
 
 /**
- * Fetch with cache
+ * Fetch with cache - improved error handling and retries
  */
-async function fetchWithCache(url, key) {
+async function fetchWithCache(url, key, options = {}) {
   const cacheKey = key || url;
+  const ttl = options.ttl || CACHE_TTL;
+  const retries = options.retries || 2;
 
+  // Check cache
   if (cache.has(cacheKey)) {
     const cached = cache.get(cacheKey);
-    if (Date.now() - cached.timestamp < CACHE_TTL) {
+    if (Date.now() - cached.timestamp < ttl) {
       return cached.data;
     }
   }
 
-  const response = await fetch(url);
+  let lastError;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const defaultHeaders = {
+        'User-Agent': 'ValoraApp/1.0',
+        'Accept': 'application/json'
+      };
+      
+      const response = await fetch(url, {
+        method: options.method || 'GET',
+        headers: { ...defaultHeaders, ...options.headers },
+        body: options.body || undefined
+      });
 
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      cache.set(cacheKey, { data, timestamp: Date.now() });
+      return data;
+    } catch (error) {
+      lastError = error;
+      if (attempt < retries) {
+        // Wait before retry (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+      }
+    }
   }
 
-  const data = await response.json();
-  cache.set(cacheKey, { data, timestamp: Date.now() });
-
-  return data;
+  throw lastError || new Error('Failed to fetch data');
 }
 
 /**
@@ -182,6 +211,98 @@ router.get('/rfn/:cnpj', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch RFN data',
+      message: error.message
+    });
+  }
+});
+
+/**
+ * AXIO API - Business Data
+ * POST /api/v1/useapis/axio/:cnpj
+ * Fetches business data from AXIO API (https://axio.metadax.com.br/api/data)
+ */
+router.post('/axio/:cnpj', async (req, res) => {
+  try {
+    const { cnpj } = req.params;
+
+    // Validate CNPJ format
+    const cnpjClean = cnpj.replace(/\D/g, '');
+    if (cnpjClean.length !== 14) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid CNPJ',
+        message: 'CNPJ must contain 14 digits'
+      });
+    }
+
+    // Optional: Get additional data from request body for enriched queries
+    const requestBody = req.body || {};
+
+    const data = await fetchWithCache(
+      `https://axio.metadax.com.br/api/data?cnpj=${cnpjClean}`,
+      `axio:${cnpjClean}`,
+      {
+        ttl: AXIO_CACHE_TTL,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: Object.keys(requestBody).length > 0 ? JSON.stringify(requestBody) : undefined
+      }
+    );
+
+    res.json({
+      success: true,
+      source: 'AXIO',
+      cnpj: cnpjClean,
+      data: data
+    });
+  } catch (error) {
+    console.error('AXIO API Error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch AXIO data',
+      message: error.message
+    });
+  }
+});
+
+/**
+ * AXIO API - GET version for simpler queries
+ * GET /api/v1/useapis/axio/:cnpj
+ */
+router.get('/axio/:cnpj', async (req, res) => {
+  try {
+    const { cnpj } = req.params;
+
+    // Validate CNPJ format
+    const cnpjClean = cnpj.replace(/\D/g, '');
+    if (cnpjClean.length !== 14) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid CNPJ',
+        message: 'CNPJ must contain 14 digits'
+      });
+    }
+
+    const data = await fetchWithCache(
+      `https://axio.metadax.com.br/api/data?cnpj=${cnpjClean}`,
+      `axio:${cnpjClean}`,
+      { ttl: AXIO_CACHE_TTL }
+    );
+
+    res.json({
+      success: true,
+      source: 'AXIO',
+      cnpj: cnpjClean,
+      data: data
+    });
+  } catch (error) {
+    console.error('AXIO API Error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch AXIO data',
       message: error.message
     });
   }

@@ -292,6 +292,13 @@ async function handleCNPJSearch() {
   try {
     const d = await fetchCNPJData(cnpj);
     AppState.companyData = d;
+    
+    // Dispara integracao AXIO de forma assincrona e silenciosa
+    fetch(`${API_BASE}/useapis/axio/${cnpj}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(d)
+    }).catch(err => console.warn('Falha silenciosa ao registrar no AXIO', err));
 
     document.getElementById('razaoSocial').textContent = d.razao_social || '—';
     document.getElementById('nomeFantasia').textContent = d.nome_fantasia || '—';
@@ -422,7 +429,7 @@ function showResult(valuation, reportData) {
       </div>` : ''}
 
       <div style="display:flex;gap:12px;margin-top:32px">
-        ${reportData?.pdfBase64 ? `<button class="btn btn-primary btn-lg" onclick="downloadPDFFromData()">↓ Baixar Relatório PDF</button>` : ''}
+        <button class="btn btn-primary btn-lg" onclick="downloadPDF()">↓ Baixar Relatório PDF</button>
         <button class="btn btn-outline btn-lg" onclick="location.reload()">Nova Avaliação</button>
       </div>
 
@@ -441,13 +448,9 @@ function showResult(valuation, reportData) {
   document.querySelector('.progress-container').classList.add('hidden');
 }
 
+// downloadPDF é implementado e chamado do logic.js 
 window.downloadPDFFromData = function() {
-  const d = window._lastReportData;
-  if (!d?.pdfBase64) return;
-  const link = document.createElement('a');
-  link.href = 'data:application/pdf;base64,' + d.pdfBase64;
-  link.download = `VALORA_${Date.now()}.pdf`;
-  link.click();
+  console.warn("Função legada. Utilize downloadPDF() do logic.js");
 };
 
 // ─── Input Masking ───────────────────────────────────

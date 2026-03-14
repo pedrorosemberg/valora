@@ -11,8 +11,10 @@ VALORA is a web application developed by MTDX (METADAX) for calculating company 
 - **Multi-Method Valuation**: DCF, EBITDA Multiple, Revenue × Factor, Multiples, Scorecard
 - **Personal Equity Calculation**: 8 capital dimensions scoring
 - **Three Report Types**: Personal, Business, Complete
-- **API Integration**: BrasilAPI (CNPJ), ViaCEP (Address), MTDX Internal APIs
-- **PDF Generation**: Professional reports with METADAX branding
+- **API Integration**: BrasilAPI (CNPJ) and ViaCEP (Address) with anti-blocking headers, MTDX Internal APIs
+- **Real-Time Data Sync**: Silent background POST to AXIO API (`/api/data`) for continuous data enrichment
+- **Premium UI/UX**: "Glassmorphism" design with deep dark themes, glowing gold accents, and fluid micro-animations
+- **PDF Generation**: Immediate client-side professional reports with METADAX branding via jsPDF
 
 ## Tech Stack
 
