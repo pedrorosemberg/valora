@@ -140,7 +140,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1-6px 24px;
+    padding: 16px 24px;
     max-width: 1280px;
     margin: 0 auto;
 }
@@ -227,6 +227,7 @@
 
 
 
+
             <!-- Menu Secundário - Valora -->
             
   
@@ -239,260 +240,97 @@
     </div>
 
     <footer class="valora-footer-native">
-    <div class="valora-container-native footer-main">
+    <div class="valora-container-native footer-minimal">
+        
         <div class="footer-brand">
             <img src="https://cdn.metadax.com.br/assets/images/logo-black.png" alt="METADAX Logo" class="footer-logo">
         </div>
         
-        <div class="footer-links-grid">
-            <div class="link-column">
-                <h4>Institucional</h4>
-                <ul>
-                    <li><a href="#">Grupo METADAX</a></li>
-                    <li><a href="#">Sobre</a></li>
-                    <li><a href="#">Manual de Marca</a></li>
-                    <li><a href="#">Biblioteca</a></li>
-                    <li><a href="#">Certificados</a></li>
-                    <li><a href="#">Trabalhe Conosco</a></li>
-                    <li><a href="#">Cloud CDN/SDK</a></li>
-                    <li><a href="#">Landing Page</a></li>
-                    <li><a href="#">Portal de Segurança</a></li>
-                    <li><a href="#">B2B .txt</a></li>
-                </ul>
-            </div>
-            <div class="link-column">
-                <h4>Soluções</h4>
-                <ul>
-                    <li><a href="#">Projetos Audiovisuais</a></li>
-                    <li><a href="#">Projetos de Tecnologia</a></li>
-                    <li><a href="#">Veia Criativa</a></li>
-                    <li><a href="#">Capivara SEO</a></li>
-                    <li><a href="#">MTDX - Tecnologia Financeira</a></li>
-                    <li><a href="#">Bolsa App</a></li>
-                    <li><a href="#">Private Home Broker</a></li>
-                    <li><a href="#">Valora - Valuation e Personal Equity</a></li>
-                    <li><a href="#">AXIO - Rating de negócios</a></li>
-                    <li><a href="#">Image Generator Transform</a></li>
-                    <li><a href="#">Inventário de Carbono</a></li>
-                    <li><a href="#">Neovolt Energia</a></li>
-                </ul>
-            </div>
+        <div class="footer-info">
+            <h4 class="company-title">METADAX</h4>
+            <p>CNPJ 65.640.808/0001-89</p>
+            <p>Avenida Getúlio Vargas, 671, Sala 500, Parte 1364, Savassi, Belo Horizonte, MG - CEP 30.112-021</p>
         </div>
-    </div>
-    
-    <div class="footer-legal">
-        <div class="valora-container-native">
-            <!-- Social Icons (Generics - can be replaced with SVG icons if needed later) -->
-            <div class="social-icons">
-                <a href="#" aria-label="LinkedIn">in</a>
-                <a href="#" aria-label="Instagram">ig</a>
-                <a href="#" aria-label="Spotify">sp</a>
-                <a href="#" aria-label="YouTube">yt</a>
-                <a href="#" aria-label="GitHub">gh</a>
-                <a href="#" aria-label="TikTok">tk</a>
-                <a href="#" aria-label="X">x</a>
-            </div>
-
-            <!-- Legal Nav -->
-            <div class="legal-links">
-                <a href="#">Legal</a> | 
-                <a href="#">Privacidade</a> | 
-                <a href="#">Termos de Uso</a> | 
-                <a href="#">Segurança</a> | 
-                <a href="#">Agendamentos</a> | 
-                <a href="#">Marketing e Comunicação</a> | 
-                <a href="#">Política de Cancelamento, Devolução e Reembolso</a> | 
-                <a href="#">Política de Compras e Fornecedores</a> | 
-                <a href="#">Política de Promoções</a> | 
-                <a href="#">Informe de Incidentes</a> | 
-                <a href="/status">Status de Sistemas</a> | 
-                <a href="#">Arquivos</a> | 
-                <a href="#">Cadastro de Fornecedores</a>
-            </div>
-
-            <!-- Addresses -->
-            <div class="address-blocks">
-                <div class="address-item">
-                    <p class="company-title">METADAX TECNOLOGIA E SERVICOS - CNPJ 39.324.701/0001-00</p>
-                    <p>Avenida Paulista, 1106, Sala 01, Andar 16, Bela Vista, São Paulo, SP - CEP 01310-914</p>
-                </div>
-                <div class="address-item">
-                    <p class="company-title">METADAX CONSULTORIA E SERVICOS - CNPJ 65.640.808/0001-89</p>
-                    <p>Avenida Getúlio Vargas, 671, Sala 500, Parte 1364, Savassi, Belo Horizonte, MG - CEP 30.112-021</p>
-                </div>
-            </div>
-
-            <!-- Copyright -->
-            <div class="copyrights">
-                <p>&copy; 2026 METADAX. Todos os direitos reservados.</p>
-            </div>
+        
+        <div class="footer-copyright">
+            <p>&copy; 2026 METADAX. Todos os direitos reservados.</p>
         </div>
+
     </div>
 </footer>
 
 <style>
-/* Footer Light Completo */
+/* Footer Light Minimalista */
 .valora-footer-native {
-    background: #f8f9fa; /* Light Gray Clean */
+    background: #f4f5f7; /* Cinza mais claro */
     border-top: 1px solid #e9ecef;
     font-family: 'Inter', sans-serif;
     margin-top: 60px;
-    padding-top: 40px;
+    padding: 40px 0;
 }
 
-.valora-container-native {
+.valora-container-native.footer-minimal {
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 24px;
-}
-
-.footer-main {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    margin-bottom: 40px;
+    gap: 24px;
+    align-items: center;
+    text-align: center;
 }
 
 .footer-logo {
     height: 36px;
+    opacity: 0.9;
 }
 
-.footer-links-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
+.footer-info {
+    font-size: 0.85rem;
+    color: #495057;
+    line-height: 1.6;
+    max-width: 600px;
 }
 
-.link-column h4 {
-    color: #1E1E1E; /* Dark Text */
-    font-size: 1rem;
+.company-title {
+    font-size: 0.95rem;
     font-weight: 700;
-    margin-bottom: 16px;
-}
-
-.link-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.link-column a {
-    color: #495057; /* Off-dark text */
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.2s;
-}
-
-.link-column a:hover {
-    color: #0056B3; /* Corporate Blue hover */
-}
-
-/* Base Legal e Informações */
-.footer-legal {
-    border-top: 1px solid #dee2e6;
-    background: #f4f5f7; /* Slightly darker shade inside light theme for separation */
-    padding: 30px 0;
-}
-
-.social-icons {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-}
-
-.social-icons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #e9ecef;
-    color: #495057;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-}
-
-.social-icons a:hover {
-    background: #0056B3;
-    color: #ffffff;
-}
-
-.legal-links {
-    font-size: 0.75rem;
-    color: #6c757d;
-    line-height: 1.8;
-    margin-bottom: 24px;
-}
-
-.legal-links a {
-    color: #495057;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.legal-links a:hover {
-    color: #0056B3;
-}
-
-.address-blocks {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 24px;
-}
-
-.address-item p {
-    margin: 0;
-    font-size: 0.75rem;
-    color: #6c757d;
-    line-height: 1.5;
-}
-
-.address-item p.company-title {
-    font-weight: 600;
     color: #1E1E1E;
+    margin-bottom: 8px;
+    margin-top: 0;
 }
 
-.copyrights {
-    border-top: 1px solid #dee2e6;
-    padding-top: 16px;
+.footer-info p {
+    margin: 2px 0;
+}
+
+.footer-copyright {
     font-size: 0.75rem;
     color: #6c757d;
+    margin-top: 8px;
 }
 
-/* Responsive Overrides */
+/* Responsividade Desktop - Distribuído horizontalmente */
 @media (min-width: 768px) {
-    .footer-links-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .address-blocks {
+    .valora-container-native.footer-minimal {
         flex-direction: row;
         justify-content: space-between;
+        text-align: left;
+        align-items: center;
     }
     
-    .address-item {
+    .footer-info {
         flex: 1;
+        margin: 0 40px;
     }
-}
-
-@media (min-width: 1024px) {
-    .footer-main {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .footer-links-grid {
-        flex: 0 0 70%;
+    
+    .footer-copyright {
+        text-align: right;
+        margin-top: 0;
     }
 }
 </style>
+
 
 
 

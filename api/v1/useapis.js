@@ -86,6 +86,7 @@ router.post('/cnpj', async (req, res) => {
       `cnpj:${cnpjClean}`
     );
 
+    // Mapeamento correto com os dados retornados na v1 da documentação oficial da BrasilAPI
     res.json({
       success: true,
       source: 'BrasilAPI',
@@ -93,13 +94,13 @@ router.post('/cnpj', async (req, res) => {
         cnpj: data.cnpj,
         razao_social: data.razao_social,
         nome_fantasia: data.nome_fantasia,
-        situacao_cadastral: data.situacao_cadastral,
+        descricao_situacao_cadastral: data.descricao_situacao_cadastral,
         data_situacao_cadastral: data.data_situacao_cadastral,
-        tipo: data.tipo,
-        porte: data.porte,
-        natureza_juridica: data.natureza_juridica,
-        atividade_principal: data.atividade_principal,
-        atividades_secundarias: data.atividades_secundarias,
+        data_inicio_atividade: data.data_inicio_atividade,
+        descricao_porte: data.descricao_porte,
+        descricao_natureza_juridica: data.natureza_juridica || data.descricao_natureza_juridica,
+        cnae_fiscal_descricao: data.cnae_fiscal_descricao,
+        cnaes_secundarios: data.cnaes_secundarios,
         qsa: data.qsa, // Quadro de Sócios e Administradores
         endereco: {
           logradouro: data.logradouro,
@@ -110,7 +111,10 @@ router.post('/cnpj', async (req, res) => {
           municipio: data.municipio,
           uf: data.uf
         },
-        abertura: data.abertura,
+        contato: {
+            telefone_1: data.ddd_telefone_1,
+            telefone_2: data.ddd_telefone_2
+        },
         capital_social: data.capital_social
       }
     });

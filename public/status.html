@@ -141,7 +141,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1-6px 24px;
+    padding: 16px 24px;
     max-width: 1280px;
     margin: 0 auto;
 }
@@ -228,6 +228,7 @@
 
 
 
+
             <!-- Menu Secundário - Valora -->
             
   
@@ -235,92 +236,89 @@
     <!-- Main Content -->
     <main class="main">
         <div class="status-content">
-            <div class="status-header">
-                <h1>Status do Sistema</h1>
-                <p>Última atualização: <span id="lastUpdate">Carregando...</span></p>
+            <div class="status-header" style="text-align: center; margin-bottom: 40px;">
+                <h1 style="font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 700; color: #1E1E1E;">Status do Sistema</h1>
+                <p style="color: #6c757d; font-size: 0.95rem;">Última atualização: <span id="lastUpdate">Carregando...</span></p>
             </div>
 
-            <div class="status-grid">
-                <!-- API Status -->
-                <div class="status-card">
-                    <h3>
-                        <span class="status-indicator online" id="apiIndicator"></span>
-                        APIs Externas
-                    </h3>
-                    <div class="status-item">
-                        <span class="status-label">BrasilAPI</span>
-                        <span class="status-value" id="brasilApiStatus">Verificando...</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">ViaCEP</span>
-                        <span class="status-value" id="viaCepStatus">Verificando...</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">Latência Média</span>
-                        <span class="status-value" id="apiLatency">--</span>
-                    </div>
-                </div>
-
-                <!-- METADAX APIs -->
-                <div class="status-card">
-                    <h3>
-                        <span class="status-indicator online" id="mtdxIndicator"></span>
-                        APIs METADAX
-                    </h3>
-                    <div class="status-item">
-                        <span class="status-label">RFN API</span>
-                        <span class="status-value" id="rfnApiStatus">Verificando...</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">System Status</span>
-                        <span class="status-value" id="systemStatusApi">Verificando...</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">Validate Access</span>
-                        <span class="status-value" id="validateAccessStatus">Verificando...</span>
-                    </div>
-                </div>
-
-                <!-- System Status -->
-                <div class="status-card">
-                    <h3>
-                        <span class="status-indicator online" id="systemIndicator"></span>
-                        Sistema VALORA
-                    </h3>
-                    <div class="status-item">
-                        <span class="status-label">Status</span>
-                        <span class="status-value" id="systemStatusValue">Operacional</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">Versão</span>
-                        <span class="status-value">1.0.0</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-label">Ambiente</span>
-                        <span class="status-value" id="environment">Produção</span>
-                    </div>
+            <div class="status-card" style="background: #ffffff; padding: 32px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 32px;">
+                <h3 style="color: #1E1E1E; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1.25rem; margin-bottom: 24px;">Visão Geral dos Serviços</h3>
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                        <thead>
+                            <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                                <th style="padding: 16px; text-align: left; font-weight: 600; color: #495057;">Serviço</th>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; color: #495057;">Categoria</th>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; color: #495057;">Status</th>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; color: #495057;">Latência / Info</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Core System -->
+                            <tr style="border-bottom: 1px solid #e9ecef;">
+                                <td style="padding: 16px; color: #1E1E1E; font-weight: 500;">Sistema VALORA</td>
+                                <td style="padding: 16px; color: #6c757d;">Plataforma Central</td>
+                                <td style="padding: 16px;"><span class="badge" style="background: #e6fced; color: #10b981; padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;" id="systemStatusValue">Operacional</span></td>
+                                <td style="padding: 16px; color: #6c757d;">Versão 1.0.0 (Produção)</td>
+                            </tr>
+                            
+                            <!-- APIs Externas -->
+                            <tr style="border-bottom: 1px solid #e9ecef;">
+                                <td style="padding: 16px; color: #1E1E1E; font-weight: 500;">BrasilAPI</td>
+                                <td style="padding: 16px; color: #6c757d;">Consulta Pública (CNPJ)</td>
+                                <td style="padding: 16px;"><span class="badge" style="background: #f1f3f5; color: #495057; padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;" id="brasilApiStatus">Verificando...</span></td>
+                                <td style="padding: 16px; color: #6c757d;"><span id="apiLatency">--</span></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e9ecef;">
+                                <td style="padding: 16px; color: #1E1E1E; font-weight: 500;">ViaCEP</td>
+                                <td style="padding: 16px; color: #6c757d;">Verificação Endereço</td>
+                                <td style="padding: 16px;"><span class="badge" style="background: #f1f3f5; color: #495057; padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;" id="viaCepStatus">Verificando...</span></td>
+                                <td style="padding: 16px; color: #6c757d;">--</td>
+                            </tr>
+                            
+                            <!-- APIs METADAX -->
+                            <tr style="border-bottom: 1px solid #e9ecef;">
+                                <td style="padding: 16px; color: #1E1E1E; font-weight: 500;">RFN API</td>
+                                <td style="padding: 16px; color: #6c757d;">Receita NET Externa</td>
+                                <td style="padding: 16px;"><span class="badge" style="background: #f1f3f5; color: #495057; padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;" id="rfnApiStatus">Verificando...</span></td>
+                                <td style="padding: 16px; color: #6c757d;">--</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e9ecef;">
+                                <td style="padding: 16px; color: #1E1E1E; font-weight: 500;">System Status</td>
+                                <td style="padding: 16px; color: #6c757d;">Core Infra METADAX</td>
+                                <td style="padding: 16px;"><span class="badge" style="background: #f1f3f5; color: #495057; padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;" id="systemStatusApi">Verificando...</span></td>
+                                <td style="padding: 16px; color: #6c757d;">--</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 16px; color: #1E1E1E; font-weight: 500;">Validate Access</td>
+                                <td style="padding: 16px; color: #6c757d;">Autenticador de Servidor</td>
+                                <td style="padding: 16px;"><span class="badge" style="background: #f1f3f5; color: #495057; padding: 4px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 600;" id="validateAccessStatus">Verificando...</span></td>
+                                <td style="padding: 16px; color: #6c757d;">--</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
             <!-- Metrics -->
-            <div class="status-card">
-                <h3>Métricas do Sistema</h3>
-                <div class="metrics-grid">
-                    <div class="metric-box">
-                        <div class="metric-value" id="totalValuations">--</div>
-                        <div class="metric-label">Valuations Hoje</div>
+            <div class="status-card" style="background: #ffffff; padding: 32px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 32px;">
+                <h3 style="color: #1E1E1E; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1.25rem; margin-bottom: 24px;">Métricas de Operação</h3>
+                <div class="metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+                    <div class="metric-box" style="padding: 24px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; text-align: center;">
+                        <div class="metric-value" id="totalValuations" style="font-size: 2rem; font-weight: 700; color: #0056B3; font-family: 'DM Mono', monospace; line-height: 1;">--</div>
+                        <div class="metric-label" style="font-size: 0.85rem; color: #6c757d; font-weight: 500; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Valuations Hoje</div>
                     </div>
-                    <div class="metric-box">
-                        <div class="metric-value" id="avgProcessingTime">--</div>
-                        <div class="metric-label">Tempo Médio (s)</div>
+                    <div class="metric-box" style="padding: 24px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; text-align: center;">
+                        <div class="metric-value" id="avgProcessingTime" style="font-size: 2rem; font-weight: 700; color: #1E1E1E; font-family: 'DM Mono', monospace; line-height: 1;">--</div>
+                        <div class="metric-label" style="font-size: 0.85rem; color: #6c757d; font-weight: 500; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Tempo Médio (s)</div>
                     </div>
-                    <div class="metric-box">
-                        <div class="metric-value" id="successRate">--</div>
-                        <div class="metric-label">Taxa de Sucesso</div>
+                    <div class="metric-box" style="padding: 24px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; text-align: center;">
+                        <div class="metric-value" id="successRate" style="font-size: 2rem; font-weight: 700; color: #10b981; font-family: 'DM Mono', monospace; line-height: 1;">--</div>
+                        <div class="metric-label" style="font-size: 0.85rem; color: #6c757d; font-weight: 500; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Taxa de Sucesso</div>
                     </div>
-                    <div class="metric-box">
-                        <div class="metric-value" id="activeUsers">--</div>
-                        <div class="metric-label">Usuários Ativos</div>
+                    <div class="metric-box" style="padding: 24px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; text-align: center;">
+                        <div class="metric-value" id="activeUsers" style="font-size: 2rem; font-weight: 700; color: #1E1E1E; font-family: 'DM Mono', monospace; line-height: 1;">--</div>
+                        <div class="metric-label" style="font-size: 0.85rem; color: #6c757d; font-weight: 500; margin-top: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Usuários Ativos</div>
                     </div>
                 </div>
             </div>
@@ -345,260 +343,97 @@
 
     <!-- Footer -->
     <footer class="valora-footer-native">
-    <div class="valora-container-native footer-main">
+    <div class="valora-container-native footer-minimal">
+        
         <div class="footer-brand">
             <img src="https://cdn.metadax.com.br/assets/images/logo-black.png" alt="METADAX Logo" class="footer-logo">
         </div>
         
-        <div class="footer-links-grid">
-            <div class="link-column">
-                <h4>Institucional</h4>
-                <ul>
-                    <li><a href="#">Grupo METADAX</a></li>
-                    <li><a href="#">Sobre</a></li>
-                    <li><a href="#">Manual de Marca</a></li>
-                    <li><a href="#">Biblioteca</a></li>
-                    <li><a href="#">Certificados</a></li>
-                    <li><a href="#">Trabalhe Conosco</a></li>
-                    <li><a href="#">Cloud CDN/SDK</a></li>
-                    <li><a href="#">Landing Page</a></li>
-                    <li><a href="#">Portal de Segurança</a></li>
-                    <li><a href="#">B2B .txt</a></li>
-                </ul>
-            </div>
-            <div class="link-column">
-                <h4>Soluções</h4>
-                <ul>
-                    <li><a href="#">Projetos Audiovisuais</a></li>
-                    <li><a href="#">Projetos de Tecnologia</a></li>
-                    <li><a href="#">Veia Criativa</a></li>
-                    <li><a href="#">Capivara SEO</a></li>
-                    <li><a href="#">MTDX - Tecnologia Financeira</a></li>
-                    <li><a href="#">Bolsa App</a></li>
-                    <li><a href="#">Private Home Broker</a></li>
-                    <li><a href="#">Valora - Valuation e Personal Equity</a></li>
-                    <li><a href="#">AXIO - Rating de negócios</a></li>
-                    <li><a href="#">Image Generator Transform</a></li>
-                    <li><a href="#">Inventário de Carbono</a></li>
-                    <li><a href="#">Neovolt Energia</a></li>
-                </ul>
-            </div>
+        <div class="footer-info">
+            <h4 class="company-title">METADAX</h4>
+            <p>CNPJ 65.640.808/0001-89</p>
+            <p>Avenida Getúlio Vargas, 671, Sala 500, Parte 1364, Savassi, Belo Horizonte, MG - CEP 30.112-021</p>
         </div>
-    </div>
-    
-    <div class="footer-legal">
-        <div class="valora-container-native">
-            <!-- Social Icons (Generics - can be replaced with SVG icons if needed later) -->
-            <div class="social-icons">
-                <a href="#" aria-label="LinkedIn">in</a>
-                <a href="#" aria-label="Instagram">ig</a>
-                <a href="#" aria-label="Spotify">sp</a>
-                <a href="#" aria-label="YouTube">yt</a>
-                <a href="#" aria-label="GitHub">gh</a>
-                <a href="#" aria-label="TikTok">tk</a>
-                <a href="#" aria-label="X">x</a>
-            </div>
-
-            <!-- Legal Nav -->
-            <div class="legal-links">
-                <a href="#">Legal</a> | 
-                <a href="#">Privacidade</a> | 
-                <a href="#">Termos de Uso</a> | 
-                <a href="#">Segurança</a> | 
-                <a href="#">Agendamentos</a> | 
-                <a href="#">Marketing e Comunicação</a> | 
-                <a href="#">Política de Cancelamento, Devolução e Reembolso</a> | 
-                <a href="#">Política de Compras e Fornecedores</a> | 
-                <a href="#">Política de Promoções</a> | 
-                <a href="#">Informe de Incidentes</a> | 
-                <a href="/status">Status de Sistemas</a> | 
-                <a href="#">Arquivos</a> | 
-                <a href="#">Cadastro de Fornecedores</a>
-            </div>
-
-            <!-- Addresses -->
-            <div class="address-blocks">
-                <div class="address-item">
-                    <p class="company-title">METADAX TECNOLOGIA E SERVICOS - CNPJ 39.324.701/0001-00</p>
-                    <p>Avenida Paulista, 1106, Sala 01, Andar 16, Bela Vista, São Paulo, SP - CEP 01310-914</p>
-                </div>
-                <div class="address-item">
-                    <p class="company-title">METADAX CONSULTORIA E SERVICOS - CNPJ 65.640.808/0001-89</p>
-                    <p>Avenida Getúlio Vargas, 671, Sala 500, Parte 1364, Savassi, Belo Horizonte, MG - CEP 30.112-021</p>
-                </div>
-            </div>
-
-            <!-- Copyright -->
-            <div class="copyrights">
-                <p>&copy; 2026 METADAX. Todos os direitos reservados.</p>
-            </div>
+        
+        <div class="footer-copyright">
+            <p>&copy; 2026 METADAX. Todos os direitos reservados.</p>
         </div>
+
     </div>
 </footer>
 
 <style>
-/* Footer Light Completo */
+/* Footer Light Minimalista */
 .valora-footer-native {
-    background: #f8f9fa; /* Light Gray Clean */
+    background: #f4f5f7; /* Cinza mais claro */
     border-top: 1px solid #e9ecef;
     font-family: 'Inter', sans-serif;
     margin-top: 60px;
-    padding-top: 40px;
+    padding: 40px 0;
 }
 
-.valora-container-native {
+.valora-container-native.footer-minimal {
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 24px;
-}
-
-.footer-main {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    margin-bottom: 40px;
+    gap: 24px;
+    align-items: center;
+    text-align: center;
 }
 
 .footer-logo {
     height: 36px;
+    opacity: 0.9;
 }
 
-.footer-links-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
+.footer-info {
+    font-size: 0.85rem;
+    color: #495057;
+    line-height: 1.6;
+    max-width: 600px;
 }
 
-.link-column h4 {
-    color: #1E1E1E; /* Dark Text */
-    font-size: 1rem;
+.company-title {
+    font-size: 0.95rem;
     font-weight: 700;
-    margin-bottom: 16px;
-}
-
-.link-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.link-column a {
-    color: #495057; /* Off-dark text */
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.2s;
-}
-
-.link-column a:hover {
-    color: #0056B3; /* Corporate Blue hover */
-}
-
-/* Base Legal e Informações */
-.footer-legal {
-    border-top: 1px solid #dee2e6;
-    background: #f4f5f7; /* Slightly darker shade inside light theme for separation */
-    padding: 30px 0;
-}
-
-.social-icons {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-}
-
-.social-icons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #e9ecef;
-    color: #495057;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-}
-
-.social-icons a:hover {
-    background: #0056B3;
-    color: #ffffff;
-}
-
-.legal-links {
-    font-size: 0.75rem;
-    color: #6c757d;
-    line-height: 1.8;
-    margin-bottom: 24px;
-}
-
-.legal-links a {
-    color: #495057;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.legal-links a:hover {
-    color: #0056B3;
-}
-
-.address-blocks {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 24px;
-}
-
-.address-item p {
-    margin: 0;
-    font-size: 0.75rem;
-    color: #6c757d;
-    line-height: 1.5;
-}
-
-.address-item p.company-title {
-    font-weight: 600;
     color: #1E1E1E;
+    margin-bottom: 8px;
+    margin-top: 0;
 }
 
-.copyrights {
-    border-top: 1px solid #dee2e6;
-    padding-top: 16px;
+.footer-info p {
+    margin: 2px 0;
+}
+
+.footer-copyright {
     font-size: 0.75rem;
     color: #6c757d;
+    margin-top: 8px;
 }
 
-/* Responsive Overrides */
+/* Responsividade Desktop - Distribuído horizontalmente */
 @media (min-width: 768px) {
-    .footer-links-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .address-blocks {
+    .valora-container-native.footer-minimal {
         flex-direction: row;
         justify-content: space-between;
+        text-align: left;
+        align-items: center;
     }
     
-    .address-item {
+    .footer-info {
         flex: 1;
+        margin: 0 40px;
     }
-}
-
-@media (min-width: 1024px) {
-    .footer-main {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .footer-links-grid {
-        flex: 0 0 70%;
+    
+    .footer-copyright {
+        text-align: right;
+        margin-top: 0;
     }
 }
 </style>
+
 
 
 
@@ -616,22 +451,24 @@
                 const response = await fetch(url, { method: 'GET' });
                 const latency = Date.now() - start;
 
+                const badge = document.getElementById(statusElement);
+
                 if (response.ok) {
-                    document.getElementById(statusElement).textContent = 'Online';
-                    document.getElementById(statusElement).style.color = '#10b981';
-                    document.getElementById(indicatorElement)?.classList.remove('offline', 'warning');
-                    document.getElementById(indicatorElement)?.classList.add('online');
+                    badge.textContent = 'Online';
+                    badge.style.background = '#e6fced';
+                    badge.style.color = '#10b981';
                     return { status: 'online', latency };
                 } else {
-                    document.getElementById(statusElement).textContent = 'Erro';
-                    document.getElementById(statusElement).style.color = '#ef4444';
-                    document.getElementById(indicatorElement)?.classList.add('offline');
+                    badge.textContent = 'Erro';
+                    badge.style.background = '#fee2e2';
+                    badge.style.color = '#ef4444';
                     return { status: 'error', latency };
                 }
             } catch (error) {
-                document.getElementById(statusElement).textContent = 'Offline';
-                document.getElementById(statusElement).style.color = '#ef4444';
-                document.getElementById(indicatorElement)?.classList.add('offline');
+                const badge = document.getElementById(statusElement);
+                badge.textContent = 'Offline';
+                badge.style.background = '#fee2e2';
+                badge.style.color = '#ef4444';
                 return { status: 'offline', latency: 0 };
             }
         }
@@ -643,15 +480,18 @@
             // Check BrasilAPI
             await checkApiStatus('/api/v1/useapis/status', 'brasilApiStatus', 'apiIndicator');
 
-            // Set mock data for demo
-            document.getElementById('viaCepStatus').textContent = 'Online';
-            document.getElementById('viaCepStatus').style.color = '#10b981';
-            document.getElementById('rfnApiStatus').textContent = 'Online';
-            document.getElementById('rfnApiStatus').style.color = '#10b981';
-            document.getElementById('systemStatusApi').textContent = 'Online';
-            document.getElementById('systemStatusApi').style.color = '#10b981';
-            document.getElementById('validateAccessStatus').textContent = 'Online';
-            document.getElementById('validateAccessStatus').style.color = '#10b981';
+            // Set mock data for demo visual updates
+            const setOnline = (id) => {
+                const el = document.getElementById(id);
+                el.textContent = 'Online';
+                el.style.background = '#e6fced';
+                el.style.color = '#10b981';
+            };
+            
+            setOnline('viaCepStatus');
+            setOnline('rfnApiStatus');
+            setOnline('systemStatusApi');
+            setOnline('validateAccessStatus');
 
             // Set metrics
             document.getElementById('totalValuations').textContent = '247';
